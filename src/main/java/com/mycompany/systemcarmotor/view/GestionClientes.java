@@ -28,7 +28,9 @@ public class GestionClientes extends javax.swing.JFrame {
         // Agregar panel
         PanelRegistrarCliente panelRegistrar = new PanelRegistrarCliente();
         jPanel1.add(panelRegistrar, "registrar");
-
+        
+        PanelBuscarCliente panelBuscar = new PanelBuscarCliente();
+        jPanel1.add(panelBuscar, "buscar");
         // Guardamos para uso posterior (puedes usar variable global si prefieres)
         this.cardLayout = cardLayout; 
     }
@@ -42,7 +44,7 @@ public class PanelRegistrarCliente extends JPanel {
         
         add (new JLabel("Registro de Clientes."));
         add(new JLabel (""));
-        setLayout(new GridLayout(8, 2, 5, 5));
+        setLayout(new GridLayout(10, 2, 5, 2));
         
         txtIdent = new JTextField(); txtNombre = new JTextField();
         txtApellido = new JTextField(); txtTelefono = new JTextField();
@@ -81,6 +83,65 @@ public class PanelRegistrarCliente extends JPanel {
         JOptionPane.showMessageDialog(this, "Cliente registrado correctamente.");
     }
 }
+
+public class PanelBuscarCliente extends JPanel {
+
+    private JTextField txtIdBuscar;
+    private JLabel lblIdent, lblNombre, lblApellido, lblTelefono, lblCorreo, lblDireccion, lblVisita;
+
+    public PanelBuscarCliente() {
+        setLayout(new GridLayout(9, 2, 5, 5));
+
+        txtIdBuscar = new JTextField();
+        JButton btnBuscar = new JButton("Buscar");
+
+        lblIdent = new JLabel(); lblNombre = new JLabel();
+        lblApellido = new JLabel(); lblTelefono = new JLabel();
+        lblCorreo = new JLabel(); lblDireccion = new JLabel();
+        lblVisita = new JLabel();
+
+        add(new JLabel("ID del Cliente:")); add(txtIdBuscar);
+        add(new JLabel()); add(btnBuscar);
+
+        add(new JLabel("Identificación:")); add(lblIdent);
+        add(new JLabel("Nombre:")); add(lblNombre);
+        add(new JLabel("Apellido:")); add(lblApellido);
+        add(new JLabel("Teléfono:")); add(lblTelefono);
+        add(new JLabel("Correo:")); add(lblCorreo);
+        add(new JLabel("Dirección:")); add(lblDireccion);
+        add(new JLabel("Próxima Visita:")); add(lblVisita);
+
+        btnBuscar.addActionListener(e -> buscarCliente());
+    }
+
+    private void buscarCliente() {
+        try {
+            int id = Integer.parseInt(txtIdBuscar.getText());
+            ClienteController controller = new ClienteController();
+            Cliente cliente = controller.buscarClientePorId(id);
+
+            if (cliente != null) {
+                lblIdent.setText(cliente.getIdentificacion());
+                lblNombre.setText(cliente.getNombre());
+                lblApellido.setText(cliente.getApellido());
+                lblTelefono.setText(cliente.getTelefono());
+                lblCorreo.setText(cliente.getCorreo());
+                lblDireccion.setText(cliente.getDireccion());
+                lblVisita.setText(cliente.getProximaVisita() != null ? cliente.getProximaVisita().toString() : "N/A");
+            } else {
+                JOptionPane.showMessageDialog(this, "Cliente no encontrado.");
+                limpiarCampos();
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ID inválido.");
+        }
+    }
+
+    private void limpiarCampos() {
+        lblIdent.setText(""); lblNombre.setText(""); lblApellido.setText("");
+        lblTelefono.setText(""); lblCorreo.setText(""); lblDireccion.setText(""); lblVisita.setText("");
+    }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -111,11 +172,11 @@ public class PanelRegistrarCliente extends JPanel {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 752, Short.MAX_VALUE)
+            .addGap(0, 701, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 277, Short.MAX_VALUE)
+            .addGap(0, 286, Short.MAX_VALUE)
         );
 
         jMenuBar1.setToolTipText("");
@@ -129,6 +190,11 @@ public class PanelRegistrarCliente extends JPanel {
         jMenuBar1.add(mRegistrar);
 
         mBuscar.setText("Buscar");
+        mBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mBuscarActionPerformed(evt);
+            }
+        });
         jMenuBar1.add(mBuscar);
 
         mActualizar.setText("Actualizar");
@@ -147,13 +213,14 @@ public class PanelRegistrarCliente extends JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel1))
-                .addContainerGap(32, Short.MAX_VALUE))
+                        .addGap(16, 16, 16)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,8 +228,8 @@ public class PanelRegistrarCliente extends JPanel {
                 .addGap(26, 26, 26)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(12, 12, 12))
         );
 
         pack();
@@ -173,6 +240,10 @@ public class PanelRegistrarCliente extends JPanel {
 
 
     }//GEN-LAST:event_mRegistrarActionPerformed
+
+    private void mBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mBuscarActionPerformed
+        cardLayout.show(jPanel1, "buscar");
+    }//GEN-LAST:event_mBuscarActionPerformed
 
     /**
      * @param args the command line arguments
