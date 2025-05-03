@@ -20,7 +20,7 @@ public class Vehiculos extends javax.swing.JFrame {
     public Vehiculos() {
         initComponents();
         vehiculoController = new VehiculoController();
-       // actualizarTabla();  // Llamamos a la función para inicializar la tabla con los vehículos desde el inicio.
+       actualizarTabla();  // Llamamos a la función para inicializar la tabla con los vehículos desde el inicio.
     }
 
     // Método para registrar un vehículo
@@ -33,9 +33,9 @@ public class Vehiculos extends javax.swing.JFrame {
 
         // Llama al controlador para registrar el vehículo
         vehiculoController.guardarVehiculo(placa, tipo, modelo, marca, idCliente);
-       // actualizarTabla(); // Actualiza la tabla con la lista de vehículos después del registro
+        actualizarTabla(); // Actualiza la tabla con la lista de vehículos después del registro
     }
-    /*
+    
     // Método para buscar y actualizar un vehículo
     private void buscarYActualizarVehiculo() {
         String placa = buscarActualizar.getText();
@@ -84,7 +84,7 @@ public class Vehiculos extends javax.swing.JFrame {
         } catch (Exception e) {
             System.err.println("Error actualizando la tabla: " + e.getMessage());
         }
-    } */
+    } 
     // Inicialización de los componentes de la interfaz
 
 
@@ -266,6 +266,11 @@ public class Vehiculos extends javax.swing.JFrame {
         jScrollPane4.setViewportView(jTableverActualizar);
 
         btnActualizar.setText("buscar");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -468,6 +473,10 @@ public class Vehiculos extends javax.swing.JFrame {
     private void btRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRegistrarActionPerformed
         registrarVehiculo();
     }//GEN-LAST:event_btRegistrarActionPerformed
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+       buscarVehiculoPorPlaca();
+    }//GEN-LAST:event_btnActualizarActionPerformed
     
     /**
      * @param args the command line arguments

@@ -67,7 +67,7 @@ public class VehiculoDAO  {
 
     // Método para eliminar un vehículo por placa
     public void eliminarVehiculo(String placa) throws SQLException {
-        String sql = "DELETE FROM vehiculo WHERE placa = ?";
+        String sql = "DELETE FROM Vehiculos WHERE placa = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -78,7 +78,7 @@ public class VehiculoDAO  {
 
     // Método para obtener un vehículo por su placa
     public Vehiculo obtenerVehiculoPorPlaca(String placa) throws SQLException {
-        String sql = "SELECT * FROM vehiculo WHERE placa = ?";
+        String sql = "SELECT * FROM Vehiculos WHERE placa = ?";
         Vehiculo vehiculo = null;
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -102,7 +102,7 @@ public class VehiculoDAO  {
 
     // Método para obtener todos los vehículos
     public List<Vehiculo> obtenerTodosVehiculos() throws SQLException {
-        String sql = "SELECT * FROM vehiculo";
+        String sql = "SELECT * FROM Vehiculos";
         List<Vehiculo> vehiculos = new ArrayList<>();
 
         try (Connection conn = DatabaseConnection.getConnection();
