@@ -359,6 +359,11 @@ public class Vehiculos extends javax.swing.JFrame {
         jLabel11.setText("Placa");
 
         btnBorrarVehicle.setText("Borrar");
+        btnBorrarVehicle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBorrarVehicleActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -477,6 +482,10 @@ public class Vehiculos extends javax.swing.JFrame {
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
        buscarVehiculoPorPlaca();
     }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnBorrarVehicleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarVehicleActionPerformed
+       borrarVehiculo();
+    }//GEN-LAST:event_btnBorrarVehicleActionPerformed
     
     /**
      * @param args the command line arguments
