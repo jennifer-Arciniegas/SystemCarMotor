@@ -64,6 +64,34 @@ public class VehiculoDAO  {
         return null;
     }
     
+    public boolean actualizarVehiculo(Vehiculo vehiculo) {
+        String query = "UPDATE vehiculos SET placa = ?, tipo = ?, modelo = ?, marca = ?, id_cliente = ? WHERE placa = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, vehiculo.getPlaca());
+            stmt.setString(2, vehiculo.getTipo());
+            stmt.setString(3, vehiculo.getModelo());
+            stmt.setString(4, vehiculo.getMarca());
+            stmt.setInt(5, vehiculo.getId_cliente());
+            stmt.setString(6, vehiculo.getPlaca());
+
+            int filasAfectadas = stmt.executeUpdate();
+            return filasAfectadas > 0;  
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     
+    public boolean eliminarVehiculo(String placa) {
+        String query = "DELETE FROM vehiculos WHERE placa = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, placa);
+            int filasAfectadas = stmt.executeUpdate();
+            return filasAfectadas > 0;  
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
 
