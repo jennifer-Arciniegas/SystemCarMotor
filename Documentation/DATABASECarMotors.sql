@@ -81,13 +81,13 @@ CREATE TABLE Vehiculos (
     modelo VARCHAR(50),
     marca VARCHAR(50),
     id_cliente INT,
-    FOREIGN KEY (id_cliente) REFERENCES Clientes(id)
+    FOREIGN KEY (id_cliente) REFERENCES Clientes(id) ON DELETE CASCADE
 );
 
 -- tabla compatibilidad
 
 CREATE TABLE Compatibilidad (
-    ID INT PRIMARY KEY,
+    ID INT PRIMARY KEY AUTO_INCREMENT,
     idRepuesto INT,
     idVehiculo INT,
     FOREIGN KEY (idRepuesto) REFERENCES Repuestos(ID),
@@ -141,14 +141,14 @@ CREATE TABLE Servicios (
     id_estado INT,
     orden_entrega TEXT,
     id_Tipo_Mantenimiento INT,
-    FOREIGN KEY (id_vehiculo) REFERENCES Vehiculos(id),
+    FOREIGN KEY (id_vehiculo) REFERENCES Vehiculos(id) ON DELETE CASCADE,
     FOREIGN KEY (id_estado) REFERENCES EstadoServicio(id),
     FOREIGN KEY (id_Tipo_Mantenimiento) REFERENCES TipoMantenimiento(id)
 );
 
 -- Tabla: Mano_de_obra
 CREATE TABLE Mano_de_obra (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     descripcion VARCHAR(100),
     tarifaHora DECIMAL(10,2),
     idTecnico INT,
@@ -165,7 +165,7 @@ CREATE TABLE Uso_Repuestos (
     id_repuesto INT,
     id_lote INT,
     cantidad_usada INT NOT NULL,
-    FOREIGN KEY (id_servicio) REFERENCES Servicios(id),
+    FOREIGN KEY (id_servicio) REFERENCES Servicios(id) ON DELETE CASCADE,
     FOREIGN KEY (id_repuesto) REFERENCES Repuestos(id),
     FOREIGN KEY (id_lote) REFERENCES Lotes(id)
 );
@@ -178,7 +178,7 @@ CREATE TABLE Descuentos (
     porcentaje DECIMAL(5,2),
     fecha_inicio DATE NOT NULL,
     fecha_fin DATE NOT NULL,
-    FOREIGN KEY (id_cliente) REFERENCES Clientes(id)
+    FOREIGN KEY (id_cliente) REFERENCES Clientes(id) ON DELETE CASCADE
 );
 
 -- Tabla para Información del Taller
@@ -204,8 +204,8 @@ CREATE TABLE Facturas (
     id_cliente INT,
     id_servicio INT,
     id_TallerInformacion INT,
-    FOREIGN KEY (id_cliente) REFERENCES Clientes(id),
-    FOREIGN KEY (id_servicio) REFERENCES Servicios(id),
+    FOREIGN KEY (id_cliente) REFERENCES Clientes(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_servicio) REFERENCES Servicios(id) ON DELETE CASCADE,
     FOREIGN KEY (id_TallerInformacion) REFERENCES TallerInformacion(id)
 );
 
@@ -232,7 +232,7 @@ CREATE TABLE Inspecciones_Tecnicas (
     resultado ENUM('Aprobado', 'Reparaciones necesarias', 'Rechazado') NOT NULL,
     observaciones TEXT,
     proxima_revision DATE,
-    FOREIGN KEY (id_vehiculo) REFERENCES Vehiculos(id)
+    FOREIGN KEY (id_vehiculo) REFERENCES Vehiculos(id) ON DELETE CASCADE
 );
 
 -- Índices para mejorar rendimiento
