@@ -118,7 +118,7 @@ public void actualizar(Cliente entity) {
 
 
 public Cliente buscar(Integer id) {
-    String sql = "SELECT * FROM Clientes WHERE id = ?";
+    String sql = "SELECT * FROM Clientes WHERE identificacion = ?";
     Cliente cliente = null;
 
     try (Connection conn = DatabaseConnection.getConnection();
