@@ -3,16 +3,18 @@ package com.mycompany.systemcarmotor.model;
 
 
 public class Vehiculo {
-    private int id;
+      private int id;
     private String placa;
     private String tipo;
     private String modelo;
     private String marca;
     private int id_cliente;
 
+    // Constructor vacío
     public Vehiculo() {
     }
 
+    // Constructor con todos los parámetros
     public Vehiculo(int id, String placa, String tipo, String modelo, String marca, int id_cliente) {
         this.id = id;
         this.placa = placa;
@@ -22,6 +24,7 @@ public class Vehiculo {
         this.id_cliente = id_cliente;
     }
 
+    // Constructor sin 'id', ideal para la creación de nuevos vehículos
     public Vehiculo(String placa, String tipo, String modelo, String marca, int id_cliente) {
         this.placa = placa;
         this.tipo = tipo;
@@ -30,6 +33,7 @@ public class Vehiculo {
         this.id_cliente = id_cliente;
     }
 
+    // Getters y Setters
     public int getId() {
         return id;
     }
@@ -77,6 +81,12 @@ public class Vehiculo {
     public void setId_cliente(int id_cliente) {
         this.id_cliente = id_cliente;
     }
-    
+
+    // Método toString (opcional) para imprimir la información del vehículo
+    @Override
+    public String toString() {
+        return "Vehiculo{id=" + id + ", placa='" + placa + "', tipo='" + tipo + "', modelo='" + modelo +
+                "', marca='" + marca + "', id_cliente=" + id_cliente + '}';
+    }
     
 }

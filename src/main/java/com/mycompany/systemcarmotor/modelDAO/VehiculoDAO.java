@@ -5,93 +5,124 @@
 package com.mycompany.systemcarmotor.modelDAO;
 
 import com.mycompany.systemcarmotor.model.Vehiculo;
+import com.mycompany.systemcarmotor.util.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author camper
  */
 public class VehiculoDAO  {
- private Connection connection;
+ 
+    private static VehiculoDAO instance;
 
-    public VehiculoDAO(Connection connection) {
-        this.connection = connection;
+    private VehiculoDAO() {
+        // Constructor privado para implementar el patrón Singleton
     }
-  
-    public boolean registrarVehiculo(Vehiculo vehiculo) {
-        try {
-            String query = "INSERT INTO vehiculos (placa, tipo, modelo, marca, id_cliente) VALUES (?, ?, ?, ?, ?)";
-            PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setString(1, vehiculo.getPlaca());
-             stmt.setString(2, vehiculo.getTipo()); 
-              stmt.setString(3, vehiculo.getModelo());
-            stmt.setString(4, vehiculo.getMarca());
-             stmt.setInt(5, vehiculo.getId_cliente());
-           
-           
-            int result = stmt.executeUpdate();
-            return result > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+
+    public static VehiculoDAO getInstance() {
+        if (instance == null) {
+            instance = new VehiculoDAO();
+        }
+        return instance;
+    }
+
+    // Método para guardar un nuevo vehículo en la base de datos
+    public void guardarVehiculo(Vehiculo vehiculo) throws SQLException {
+        String sql = "INSERT INTO vehiculo (placa, tipo, modelo, marca, id_cliente) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, vehiculo.getPlaca());
+            pstmt.setString(2, vehiculo.getTipo());
+            pstmt.setString(3, vehiculo.getModelo());
+            pstmt.setString(4, vehiculo.getMarca());
+            pstmt.setInt(5, vehiculo.getId_cliente());
+            pstmt.executeUpdate();
         }
     }
-    
-    public Vehiculo obtenerVehiculoPorPlaca(String placa) {
-        try {
-            String query = "SELECT * FROM vehiculos WHERE placa = ?";
-            PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setString(1, placa);
-            ResultSet rs = stmt.executeQuery();
+
+    // Método para actualizar los detalles de un vehículo
+    public void actualizarVehiculo(Vehiculo vehiculo) throws SQLException {
+        String sql = "UPDATE vehiculo SET placa = ?, tipo = ?, modelo = ?, marca = ?, id_cliente = ? WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, vehiculo.getPlaca());
+            pstmt.setString(2, vehiculo.getTipo());
+            pstmt.setString(3, vehiculo.getModelo());
+            pstmt.setString(4, vehiculo.getMarca());
+            pstmt.setInt(5, vehiculo.getId_cliente());
+            pstmt.setInt(6, vehiculo.getId());
+            pstmt.executeUpdate();
+        }
+    }
+
+    // Método para eliminar un vehículo de la base de datos
+    public void eliminarVehiculo(int id) throws SQLException {
+        String sql = "DELETE FROM vehiculo WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+        }
+    }
+
+    // Método para obtener un vehículo por su id
+    public Vehiculo obtenerVehiculoPorId(int id) throws SQLException {
+        String sql = "SELECT * FROM vehiculo WHERE id = ?";
+        Vehiculo vehiculo = null;
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
             if (rs.next()) {
-                return new Vehiculo(
+                vehiculo = new Vehiculo(
+                    rs.getInt("id"),
                     rs.getString("placa"),
-                    rs.getString("Tipo"),
+                    rs.getString("tipo"),
                     rs.getString("modelo"),
                     rs.getString("marca"),
-                    rs.getInt("id cliente")
+                    rs.getInt("id_cliente")
                 );
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return null;
+        return vehiculo;
     }
-    
-    public boolean actualizarVehiculo(Vehiculo vehiculo) {
-        String query = "UPDATE vehiculos SET placa = ?, tipo = ?, modelo = ?, marca = ?, id_cliente = ? WHERE placa = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, vehiculo.getPlaca());
-            stmt.setString(2, vehiculo.getTipo());
-            stmt.setString(3, vehiculo.getModelo());
-            stmt.setString(4, vehiculo.getMarca());
-            stmt.setInt(5, vehiculo.getId_cliente());
-            stmt.setString(6, vehiculo.getPlaca());
 
-            int filasAfectadas = stmt.executeUpdate();
-            return filasAfectadas > 0;  
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+    // Método para obtener todos los vehículos
+    public List<Vehiculo> obtenerTodosVehiculos() throws SQLException {
+        String sql = "SELECT * FROM vehiculo";
+        List<Vehiculo> vehiculos = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Vehiculo vehiculo = new Vehiculo(
+                    rs.getInt("id"),
+                    rs.getString("placa"),
+                    rs.getString("tipo"),
+                    rs.getString("modelo"),
+                    rs.getString("marca"),
+                    rs.getInt("id_cliente")
+                );
+                vehiculos.add(vehiculo);
+            }
         }
-    }
-    
-    public boolean eliminarVehiculo(String placa) {
-        String query = "DELETE FROM vehiculos WHERE placa = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, placa);
-            int filasAfectadas = stmt.executeUpdate();
-            return filasAfectadas > 0;  
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return vehiculos;
     }
 }
 

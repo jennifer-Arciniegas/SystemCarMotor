@@ -18,33 +18,44 @@ public class VehiculoBuilder {
     private String marca;
     private int id_cliente;
 
-    public VehiculoBuilder  setPlaca(String placa) {
+    // Constructor vacío
+    public VehiculoBuilder() {
+    }
+
+    // Método para establecer la placa
+    public VehiculoBuilder setPlaca(String placa) {
         this.placa = placa;
         return this;
     }
 
+    // Método para establecer el tipo de vehículo
     public VehiculoBuilder setTipo(String tipo) {
         this.tipo = tipo;
         return this;
     }
 
+    // Método para establecer el modelo del vehículo
     public VehiculoBuilder setModelo(String modelo) {
         this.modelo = modelo;
         return this;
     }
 
+    // Método para establecer la marca del vehículo
     public VehiculoBuilder setMarca(String marca) {
         this.marca = marca;
         return this;
     }
 
-    public VehiculoBuilder setId_cliente(int id_cliente) {
+    // Método para establecer el id del cliente (propietario del vehículo)
+    public VehiculoBuilder setIdCliente(int id_cliente) {
         this.id_cliente = id_cliente;
         return this;
     }
-    
-    public Vehiculo build(){
-        return new Vehiculo (placa, tipo, modelo, marca, id_cliente);
+
+    // Método para construir el objeto Vehiculo con los valores proporcionados
+    public Vehiculo build() {
+        // Se puede agregar validaciones si es necesario (por ejemplo, que los campos no estén vacíos)
+        return new Vehiculo(placa, tipo, modelo, marca, id_cliente);
     }
     
     
