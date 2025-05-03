@@ -36,7 +36,7 @@ public class VehiculoDAO  {
 
     // Método para guardar un nuevo vehículo en la base de datos
     public void guardarVehiculo(Vehiculo vehiculo) throws SQLException {
-        String sql = "INSERT INTO vehiculo (placa, tipo, modelo, marca, id_cliente) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Vehiculos (placa, tipo, modelo, marca, id_cliente) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -51,7 +51,7 @@ public class VehiculoDAO  {
 
     // Método para actualizar los detalles de un vehículo por placa
     public void actualizarVehiculo(Vehiculo vehiculo) throws SQLException {
-        String sql = "UPDATE vehiculo SET placa = ?, tipo = ?, modelo = ?, marca = ?, id_cliente = ? WHERE placa = ?";
+        String sql = "UPDATE Vehiculos SET placa = ?, tipo = ?, modelo = ?, marca = ?, id_cliente = ? WHERE placa = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
