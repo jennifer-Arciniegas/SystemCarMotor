@@ -19,56 +19,10 @@ public class Vehiculos extends javax.swing.JFrame {
      */
     public Vehiculos() {
         initComponents();
-        btRegistrar.addActionListener(e -> registrarVehiculo());
+     
     }
 
-    private void registrarVehiculo() {
-        // Capturar los datos del formulario
-        String placa = tbPlaca.getText();
-        String tipo = (String) cbTipo.getSelectedItem();  // Aquí, asumo que cmbTipo es un JComboBox
-        String modelo = tbModelo.getText();
-        String marca = tbMarca.getText();
-        String id_cliente = tbCliente.getText();
-
-        // Verificar que los campos no estén vacíos
-        if (placa.isEmpty() || tipo.isEmpty() || modelo.isEmpty() || marca.isEmpty() || id_cliente.isEmpty() ) {
-            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
-            return;
-        }
-
-        // Crear el objeto Vehiculo
-        Vehiculo vehiculo = new Vehiculo();
-        vehiculo.setPlaca(placa);
-        vehiculo.setTipo(tipo);
-        vehiculo.setModelo(modelo);
-        vehiculo.setMarca(marca);
-
-        // Llamar al controlador para registrar el vehículo
-        VehiculoController controller = new VehiculoController();
-        boolean exito = controller.registrarVehiculo(vehiculo);
-
-        // Mostrar el resultado
-        if (exito) {
-            JOptionPane.showMessageDialog(this, "Vehículo registrado correctamente.");
-        } else {
-            JOptionPane.showMessageDialog(this, "Error al registrar el vehículo.");
-        }
-    }
-    
-    // Método de inicialización de la interfaz gráfica
-    private void initComponents() {
-        // Aquí deberías tener el código generado por NetBeans para crear los componentes
-        // Ejemplo de los campos de texto y combo box para los campos de Vehículo:
-        tbPlaca = new javax.swing.JTextField();
-        cbTipo = new javax.swing.JComboBox<>(new String[] {"Automóvil","SUV","Motocicleta","Camión","Otro"});
-        tbModelo = new javax.swing.JTextField();
-        tbMarca = new javax.swing.JTextField();
-        tbCliente = new javax.swing.JTextField();
-        btRegistrar = new javax.swing.JButton("Registrar");
-        
-        // Agregar los componentes al layout y configurar el evento de clic para btnRegistrar
-    }
-    
+   
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -151,11 +105,11 @@ public class Vehiculos extends javax.swing.JFrame {
                         .addGap(63, 63, 63)
                         .addComponent(jLabel8)
                         .addGap(26, 26, 26)
-                        .addComponent(tbCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(tbCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(100, 100, 100)
                         .addComponent(btRegistrar)))
-                .addContainerGap(218, Short.MAX_VALUE))
+                .addContainerGap(146, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(24, 24, 24)
