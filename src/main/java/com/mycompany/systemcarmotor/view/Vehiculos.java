@@ -4,25 +4,90 @@
  */
 package com.mycompany.systemcarmotor.view;
 
+import com.mycompany.systemcarmotor.controllers.VehiculoController;
 
-
-
+import com.mycompany.systemcarmotor.model.Vehiculo;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author camper
  */
 public class Vehiculos extends javax.swing.JFrame {
+  private VehiculoController vehiculoController;
 
-    /**
-     * Creates new form Vehiculos
-     */
     public Vehiculos() {
         initComponents();
-     
+        vehiculoController = new VehiculoController();
+        actualizarTabla();  // Llamamos a la función para inicializar la tabla con los vehículos desde el inicio.
     }
 
-   
+    // Método para registrar un vehículo
+    private void registrarVehiculo() {
+        String placa = tbPlacaRegister.getText();
+        String tipo = (String) cbTipoRegister.getSelectedItem();
+        String modelo = tbModeloRegister.getText();
+        String marca = tbMarcaRegister.getText();
+        int idCliente = Integer.parseInt(tbClienteRegister.getText()); // Convierte el ID de cliente a entero
+
+        // Llama al controlador para registrar el vehículo
+        vehiculoController.guardarVehiculo(placa, tipo, modelo, marca, idCliente);
+        actualizarTabla(); // Actualiza la tabla con la lista de vehículos después del registro
+    }
+
+    // Método para buscar y actualizar un vehículo
+    private void buscarYActualizarVehiculo() {
+        String placa = buscarActualizar.getText();
+        Vehiculo vehiculo = vehiculoController.obtenerVehiculoPorPlaca(placa);
+        if (vehiculo != null) {
+            // Si se encuentra el vehículo, llena los campos con sus datos
+            tbPlacaRegister.setText(vehiculo.getPlaca());
+            cbTipoRegister.setSelectedItem(vehiculo.getTipo());
+            tbModeloRegister.setText(vehiculo.getModelo());
+            tbMarcaRegister.setText(vehiculo.getMarca());
+            tbClienteRegister.setText(String.valueOf(vehiculo.getId_cliente()));
+        }
+    }
+
+    // Método para eliminar un vehículo
+    private void borrarVehiculo() {
+        String placa = tbBorrarVehicle.getText();
+        vehiculoController.eliminarVehiculo(placa);
+        actualizarTabla(); // Actualiza la tabla después de la eliminación
+    }
+
+    // Método para buscar vehículo por placa
+    private void buscarVehiculoPorPlaca() {
+        String placa = tbBuscarPlaca.getText();
+        Vehiculo vehiculo = vehiculoController.obtenerVehiculoPorPlaca(placa);
+        if (vehiculo != null) {
+            // Si el vehículo es encontrado, mostrarlo en la tabla
+            DefaultTableModel model = (DefaultTableModel) jTableBuscarPlaca.getModel();
+            model.setRowCount(0); // Limpiar la tabla antes de agregar los nuevos datos
+            model.addRow(new Object[]{vehiculo.getPlaca(), vehiculo.getTipo(), vehiculo.getModelo(), vehiculo.getMarca(), vehiculo.getId_cliente()});
+        }
+    }
+
+    // Método para actualizar la tabla con los vehículos
+    private void actualizarTabla() {
+        try {
+            // Llama al controlador para obtener todos los vehículos
+            List<Vehiculo> vehiculos = vehiculoController.obtenerTodosVehiculos();
+            DefaultTableModel model = (DefaultTableModel) jTableverVehiculos.getModel();
+            model.setRowCount(0); // Limpiar tabla antes de agregar los nuevos datos
+
+            for (Vehiculo vehiculo : vehiculos) {
+                // Añadir los vehículos a la tabla
+                model.addRow(new Object[]{vehiculo.getPlaca(), vehiculo.getTipo(), vehiculo.getModelo(), vehiculo.getMarca(), vehiculo.getId_cliente()});
+            }
+        } catch (Exception e) {
+            System.err.println("Error actualizando la tabla: " + e.getMessage());
+        }
+    }
+    // Inicialización de los componentes de la interfaz
+
+
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -40,26 +105,36 @@ public class Vehiculos extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        tbPlaca = new javax.swing.JTextField();
-        cbTipo = new javax.swing.JComboBox<>();
+        tbPlacaRegister = new javax.swing.JTextField();
+        cbTipoRegister = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        tbModelo = new javax.swing.JTextField();
+        tbModeloRegister = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        tbMarca = new javax.swing.JTextField();
+        tbMarcaRegister = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        tbCliente = new javax.swing.JTextField();
+        tbClienteRegister = new javax.swing.JTextField();
         btRegistrar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTableverActualizar = new javax.swing.JTable();
+        buscarActualizar = new javax.swing.JTextField();
+        btnActualizar = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTableverVehiculos = new javax.swing.JTable();
+        jLabel10 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        tbBorrarVehicle = new javax.swing.JTextField();
+        btnBorrarVehicle = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        btnBuscarPlaca = new javax.swing.JButton();
+        tbBuscarPlaca = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        jTableBuscarPlaca = new javax.swing.JTable();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -78,11 +153,12 @@ public class Vehiculos extends javax.swing.JFrame {
 
         jLabel1.setText("Gestion vehiculos");
 
+        jLabel3.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
         jLabel3.setText("Registro Vehiculo");
 
         jLabel4.setText("Tipo:");
 
-        cbTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Automóvil", "SUV", "Motocicleta", "Camión", "Otro" }));
+        cbTipoRegister.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Automóvil", "SUV", "Motocicleta", "Camión", "Otro" }));
 
         jLabel5.setText("Placa:");
 
@@ -109,35 +185,32 @@ public class Vehiculos extends javax.swing.JFrame {
                                 .addGap(26, 26, 26)
                                 .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(tbModelo))
+                                .addComponent(tbModeloRegister))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(84, 84, 84)
-                                .addComponent(tbPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(17, 17, 17)
+                                .addComponent(jLabel5)
+                                .addGap(26, 26, 26)
+                                .addComponent(tbPlacaRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(57, 57, 57)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(36, 36, 36)
-                                .addComponent(cbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(cbTipoRegister, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addGap(18, 18, 18)
-                                .addComponent(tbMarca, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)))))
+                                .addComponent(tbMarcaRegister, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)))))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(63, 63, 63)
                         .addComponent(jLabel8)
                         .addGap(26, 26, 26)
-                        .addComponent(tbCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(tbClienteRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(100, 100, 100)
                         .addComponent(btRegistrar)))
                 .addContainerGap(146, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(24, 24, 24)
-                    .addComponent(jLabel5)
-                    .addContainerGap(774, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,79 +220,26 @@ public class Vehiculos extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(tbPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tbPlacaRegister, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbTipoRegister, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
-                    .addComponent(tbCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tbClienteRegister, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(tbModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tbModeloRegister, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
-                    .addComponent(tbMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tbMarcaRegister, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btRegistrar))
                 .addGap(59, 59, 59))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(55, 55, 55)
-                    .addComponent(jLabel5)
-                    .addContainerGap(119, Short.MAX_VALUE)))
         );
 
         jTabbedPane1.addTab("Registrar", jPanel1);
 
-        jLabel2.setText("jLabel2");
+        jLabel2.setText("Placa:");
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jLabel2)
-                .addContainerGap(770, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jLabel2)
-                .addContainerGap(159, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("Actualizar", jPanel2);
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 839, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 192, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("Ver", jPanel3);
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 839, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 192, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("Eliminar", jPanel4);
-
-        jLabel9.setText("Placa");
-
-        jButton1.setText("Buscar");
-
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        jTableverActualizar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -238,7 +258,148 @@ public class Vehiculos extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane4.setViewportView(jTableverActualizar);
+
+        btnActualizar.setText("buscar");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(buscarActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addComponent(btnActualizar)
+                .addContainerGap(574, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(15, 15, 15)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 809, Short.MAX_VALUE)
+                    .addGap(15, 15, 15)))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(buscarActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnActualizar))
+                .addContainerGap(162, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(38, 38, 38)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(39, Short.MAX_VALUE)))
+        );
+
+        jTabbedPane1.addTab("Actualizar", jPanel2);
+
+        jTableverVehiculos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Placa", "Tipo", "Modelo", "Marca", "Cliente"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(jTableverVehiculos);
+
+        jLabel10.setText("Ver vehiculos");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 809, Short.MAX_VALUE)
+                .addGap(24, 24, 24))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jLabel10)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(17, Short.MAX_VALUE)
+                .addComponent(jLabel10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36))
+        );
+
+        jTabbedPane1.addTab("Ver", jPanel3);
+
+        jLabel11.setText("Placa");
+
+        btnBorrarVehicle.setText("Borrar");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jLabel11)
+                .addGap(40, 40, 40)
+                .addComponent(tbBorrarVehicle, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addComponent(btnBorrarVehicle)
+                .addContainerGap(518, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(tbBorrarVehicle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBorrarVehicle))
+                .addContainerGap(146, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Eliminar", jPanel4);
+
+        jLabel9.setText("Placa");
+
+        btnBuscarPlaca.setText("Buscar");
+
+        jTableBuscarPlaca.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Placa", "Tipo", "Modelo", "Marca", "Cliente"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(jTableBuscarPlaca);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -248,9 +409,9 @@ public class Vehiculos extends javax.swing.JFrame {
                 .addGap(15, 15, 15)
                 .addComponent(jLabel9)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tbBuscarPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(btnBuscarPlaca)
                 .addContainerGap(572, Short.MAX_VALUE))
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
@@ -263,8 +424,8 @@ public class Vehiculos extends javax.swing.JFrame {
                 .addGap(11, 11, 11)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(tbBuscarPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscarPlaca))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(24, Short.MAX_VALUE))
@@ -282,9 +443,9 @@ public class Vehiculos extends javax.swing.JFrame {
                         .addGap(29, 29, 29)
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
+                        .addGap(20, 20, 20)
                         .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 839, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -298,7 +459,7 @@ public class Vehiculos extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     /**
      * @param args the command line arguments
      */
@@ -336,9 +497,14 @@ public class Vehiculos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btRegistrar;
-    private javax.swing.JComboBox<String> cbTipo;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnBorrarVehicle;
+    private javax.swing.JButton btnBuscarPlaca;
+    private javax.swing.JTextField buscarActualizar;
+    private javax.swing.JComboBox<String> cbTipoRegister;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -354,13 +520,18 @@ public class Vehiculos extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField tbCliente;
-    private javax.swing.JTextField tbMarca;
-    private javax.swing.JTextField tbModelo;
-    private javax.swing.JTextField tbPlaca;
+    private javax.swing.JTable jTableBuscarPlaca;
+    private javax.swing.JTable jTableverActualizar;
+    private javax.swing.JTable jTableverVehiculos;
+    private javax.swing.JTextField tbBorrarVehicle;
+    private javax.swing.JTextField tbBuscarPlaca;
+    private javax.swing.JTextField tbClienteRegister;
+    private javax.swing.JTextField tbMarcaRegister;
+    private javax.swing.JTextField tbModeloRegister;
+    private javax.swing.JTextField tbPlacaRegister;
     // End of variables declaration//GEN-END:variables
 }

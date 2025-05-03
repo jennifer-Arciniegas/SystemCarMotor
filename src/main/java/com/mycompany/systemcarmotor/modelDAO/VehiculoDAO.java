@@ -21,8 +21,7 @@ import java.util.List;
  * @author camper
  */
 public class VehiculoDAO  {
- 
-    private static VehiculoDAO instance;
+  private static VehiculoDAO instance;
 
     private VehiculoDAO() {
         // Constructor privado para implementar el patrón Singleton
@@ -50,9 +49,9 @@ public class VehiculoDAO  {
         }
     }
 
-    // Método para actualizar los detalles de un vehículo
+    // Método para actualizar los detalles de un vehículo por placa
     public void actualizarVehiculo(Vehiculo vehiculo) throws SQLException {
-        String sql = "UPDATE vehiculo SET placa = ?, tipo = ?, modelo = ?, marca = ?, id_cliente = ? WHERE id = ?";
+        String sql = "UPDATE vehiculo SET placa = ?, tipo = ?, modelo = ?, marca = ?, id_cliente = ? WHERE placa = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -61,30 +60,30 @@ public class VehiculoDAO  {
             pstmt.setString(3, vehiculo.getModelo());
             pstmt.setString(4, vehiculo.getMarca());
             pstmt.setInt(5, vehiculo.getId_cliente());
-            pstmt.setInt(6, vehiculo.getId());
+            pstmt.setString(6, vehiculo.getPlaca()); // Usar placa para la condición WHERE
             pstmt.executeUpdate();
         }
     }
 
-    // Método para eliminar un vehículo de la base de datos
-    public void eliminarVehiculo(int id) throws SQLException {
-        String sql = "DELETE FROM vehiculo WHERE id = ?";
+    // Método para eliminar un vehículo por placa
+    public void eliminarVehiculo(String placa) throws SQLException {
+        String sql = "DELETE FROM vehiculo WHERE placa = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, id);
+            pstmt.setString(1, placa);
             pstmt.executeUpdate();
         }
     }
 
-    // Método para obtener un vehículo por su id
-    public Vehiculo obtenerVehiculoPorId(int id) throws SQLException {
-        String sql = "SELECT * FROM vehiculo WHERE id = ?";
+    // Método para obtener un vehículo por su placa
+    public Vehiculo obtenerVehiculoPorPlaca(String placa) throws SQLException {
+        String sql = "SELECT * FROM vehiculo WHERE placa = ?";
         Vehiculo vehiculo = null;
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, id);
+            pstmt.setString(1, placa);
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
@@ -124,5 +123,6 @@ public class VehiculoDAO  {
         }
         return vehiculos;
     }
+    
 }
 

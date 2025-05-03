@@ -16,85 +16,68 @@ import java.util.List;
  * @author camper
  */
 public class VehiculoController {
-      private final VehiculoService vehiculoService;
+ 
+    private final VehiculoService vehiculoService;
 
     // Constructor que inicializa el VehiculoService
     public VehiculoController() {
         this.vehiculoService = new VehiculoService();
     }
 
-    // Método para registrar un nuevo vehículo
-    public void registrarVehiculo(String placa, String tipo, String modelo, String marca, int id_cliente) {
-        Vehiculo vehiculo = new Vehiculo(placa, tipo, modelo, marca, id_cliente);
-
+    // Método para registrar un vehículo
+    public void guardarVehiculo(String placa, String tipo, String modelo, String marca, int idCliente) {
         try {
-            // Llamada al servicio para guardar el vehículo
-            vehiculoService.guardarVehiculo(vehiculo);
+            vehiculoService.guardarVehiculo(placa, tipo, modelo, marca, idCliente);
             System.out.println("Vehículo registrado exitosamente.");
         } catch (SQLException e) {
-            System.err.println("Error al registrar el vehículo: " + e.getMessage());
+            System.err.println("Error al registrar vehículo: " + e.getMessage());
         } catch (IllegalArgumentException e) {
             System.err.println("Error: " + e.getMessage());
         }
     }
 
-    // Método para actualizar los detalles de un vehículo
-    public void actualizarVehiculo(int id, String placa, String tipo, String modelo, String marca, int id_cliente) {
-        Vehiculo vehiculo = new Vehiculo(id, placa, tipo, modelo, marca, id_cliente);
-
+    // Método para actualizar un vehículo
+    public void actualizarVehiculo(String placa, String tipo, String modelo, String marca, int idCliente) {
         try {
-            // Llamada al servicio para actualizar el vehículo
-            vehiculoService.actualizarVehiculo(vehiculo);
+            vehiculoService.actualizarVehiculo(placa, tipo, modelo, marca, idCliente);
             System.out.println("Vehículo actualizado exitosamente.");
         } catch (SQLException e) {
-            System.err.println("Error al actualizar el vehículo: " + e.getMessage());
+            System.err.println("Error al actualizar vehículo: " + e.getMessage());
         } catch (IllegalArgumentException e) {
             System.err.println("Error: " + e.getMessage());
         }
     }
 
     // Método para eliminar un vehículo
-    public void eliminarVehiculo(int id) {
+    public void eliminarVehiculo(String placa) {
         try {
-            // Llamada al servicio para eliminar el vehículo
-            vehiculoService.eliminarVehiculo(id);
+            vehiculoService.eliminarVehiculo(placa);
             System.out.println("Vehículo eliminado exitosamente.");
         } catch (SQLException e) {
-            System.err.println("Error al eliminar el vehículo: " + e.getMessage());
+            System.err.println("Error al eliminar vehículo: " + e.getMessage());
         } catch (IllegalArgumentException e) {
             System.err.println("Error: " + e.getMessage());
         }
     }
 
-    // Método para obtener un vehículo por su ID
-    public void obtenerVehiculoPorId(int id) {
+    // Método para obtener un vehículo por placa
+    public Vehiculo obtenerVehiculoPorPlaca(String placa) {
         try {
-            Vehiculo vehiculo = vehiculoService.obtenerVehiculoPorId(id);
-            if (vehiculo != null) {
-                System.out.println("Vehículo encontrado: " + vehiculo);
-            } else {
-                System.out.println("Vehículo no encontrado.");
-            }
+            return vehiculoService.obtenerVehiculoPorPlaca(placa);
         } catch (SQLException e) {
-            System.err.println("Error al obtener el vehículo: " + e.getMessage());
+            System.err.println("Error al obtener vehículo: " + e.getMessage());
         }
+        return null; // Si no se encuentra el vehículo
     }
 
     // Método para obtener todos los vehículos
-    public void obtenerTodosVehiculos() {
+    public List<Vehiculo> obtenerTodosVehiculos() {
         try {
-            List<Vehiculo> vehiculos = vehiculoService.obtenerTodosVehiculos();
-            if (!vehiculos.isEmpty()) {
-                for (Vehiculo vehiculo : vehiculos) {
-                    System.out.println(vehiculo);
-                }
-            } else {
-                System.out.println("No hay vehículos registrados.");
-            }
+            return vehiculoService.obtenerTodosVehiculos();
         } catch (SQLException e) {
-            System.err.println("Error al obtener los vehículos: " + e.getMessage());
+            System.err.println("Error al obtener todos los vehículos: " + e.getMessage());
         }
+        return null;
     }
-    
    
 }

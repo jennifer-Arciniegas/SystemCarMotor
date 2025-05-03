@@ -12,9 +12,9 @@ import java.util.List;
 /**
  *
  * @author camper
- */
+ */ 
 public class VehiculoService {
-      private final VehiculoDAO vehiculoDAO;
+     private final VehiculoDAO vehiculoDAO;
 
     // Constructor que inicializa el VehiculoDAO
     public VehiculoService() {
@@ -22,52 +22,49 @@ public class VehiculoService {
     }
 
     // Método para guardar un nuevo vehículo
-    public void guardarVehiculo(Vehiculo vehiculo) throws SQLException {
-        // Se puede agregar validaciones si es necesario antes de guardar el vehículo
-        if (vehiculo.getPlaca() == null || vehiculo.getPlaca().isEmpty()) {
-            throw new IllegalArgumentException("La placa del vehículo es obligatoria.");
+    public void guardarVehiculo(String placa, String tipo, String modelo, String marca, int idCliente) throws SQLException {
+        // Validaciones (por ejemplo, asegurarse de que la placa no esté vacía)
+        if (placa == null || placa.isEmpty()) {
+            throw new IllegalArgumentException("La placa es obligatoria.");
         }
 
-        // Llamada al DAO para guardar el vehículo
-        vehiculoDAO.guardarVehiculo(vehiculo);
+        Vehiculo vehiculo = new Vehiculo(placa, tipo, modelo, marca, idCliente);
+        vehiculoDAO.guardarVehiculo(vehiculo); // Llama al DAO para guardar el vehículo
     }
 
-    // Método para actualizar un vehículo
-    public void actualizarVehiculo(Vehiculo vehiculo) throws SQLException {
-        // Validación del vehículo antes de actualizar
-        if (vehiculo.getId() <= 0) {
-            throw new IllegalArgumentException("El ID del vehículo es inválido.");
+    // Método para actualizar los detalles de un vehículo por placa
+    public void actualizarVehiculo(String placa, String tipo, String modelo, String marca, int idCliente) throws SQLException {
+        // Validaciones
+        if (placa == null || placa.isEmpty()) {
+            throw new IllegalArgumentException("La placa es obligatoria para actualizar.");
         }
 
-        // Llamada al DAO para actualizar el vehículo
-        vehiculoDAO.actualizarVehiculo(vehiculo);
+        Vehiculo vehiculo = new Vehiculo(placa, tipo, modelo, marca, idCliente);
+        vehiculoDAO.actualizarVehiculo(vehiculo); // Llama al DAO para actualizar el vehículo
     }
 
-    // Método para eliminar un vehículo por su ID
-    public void eliminarVehiculo(int id) throws SQLException {
-        // Validación del ID
-        if (id <= 0) {
-            throw new IllegalArgumentException("El ID del vehículo es inválido.");
+    // Método para eliminar un vehículo por placa
+    public void eliminarVehiculo(String placa) throws SQLException {
+        // Validaciones
+        if (placa == null || placa.isEmpty()) {
+            throw new IllegalArgumentException("La placa es obligatoria para eliminar.");
         }
 
-        // Llamada al DAO para eliminar el vehículo
-        vehiculoDAO.eliminarVehiculo(id);
+        vehiculoDAO.eliminarVehiculo(placa); // Llama al DAO para eliminar el vehículo
     }
 
-    // Método para obtener un vehículo por su ID
-    public Vehiculo obtenerVehiculoPorId(int id) throws SQLException {
-        // Validación del ID
-        if (id <= 0) {
-            throw new IllegalArgumentException("El ID del vehículo es inválido.");
+    // Método para obtener un vehículo por su placa
+    public Vehiculo obtenerVehiculoPorPlaca(String placa) throws SQLException {
+        // Validaciones
+        if (placa == null || placa.isEmpty()) {
+            throw new IllegalArgumentException("La placa es obligatoria para la búsqueda.");
         }
 
-        // Llamada al DAO para obtener el vehículo
-        return vehiculoDAO.obtenerVehiculoPorId(id);
+        return vehiculoDAO.obtenerVehiculoPorPlaca(placa); // Llama al DAO para obtener el vehículo
     }
 
     // Método para obtener todos los vehículos
     public List<Vehiculo> obtenerTodosVehiculos() throws SQLException {
-        // Llamada al DAO para obtener todos los vehículos
-        return vehiculoDAO.obtenerTodosVehiculos();
+        return vehiculoDAO.obtenerTodosVehiculos(); // Llama al DAO para obtener todos los vehículos
     }
 }
