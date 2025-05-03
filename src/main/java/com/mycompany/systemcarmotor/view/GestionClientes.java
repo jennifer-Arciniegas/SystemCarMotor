@@ -39,6 +39,9 @@ public class PanelRegistrarCliente extends JPanel {
     private JSpinner fechaVisita;
 
     public PanelRegistrarCliente() {
+        
+        add (new JLabel("Registro de Clientes."));
+        add(new JLabel (""));
         setLayout(new GridLayout(8, 2, 5, 5));
         
         txtIdent = new JTextField(); txtNombre = new JTextField();
@@ -47,7 +50,7 @@ public class PanelRegistrarCliente extends JPanel {
         fechaVisita = new JSpinner(new SpinnerDateModel());
         JSpinner.DateEditor editor = new JSpinner.DateEditor(fechaVisita, "yyyy-MM-dd");
         fechaVisita.setEditor(editor);
-
+        
         add(new JLabel("Identificación:")); add(txtIdent);
         add(new JLabel("Nombre:")); add(txtNombre);
         add(new JLabel("Apellido:")); add(txtApellido);
