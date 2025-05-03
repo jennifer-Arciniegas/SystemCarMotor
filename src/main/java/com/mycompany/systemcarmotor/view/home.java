@@ -75,8 +75,8 @@ public class home extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
-        Clientes ventana2 = new Clientes(); // Crea una instancia de Ventana2
-        ventana2.setVisible(true); // Muestra la ventana
+        Clientes ventana2 = new Clientes();
+        ventana2.setVisible(true); 
          this.setVisible(false);
     }//GEN-LAST:event_btnClientesActionPerformed
 
