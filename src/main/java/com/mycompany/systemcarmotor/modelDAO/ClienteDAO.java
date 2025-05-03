@@ -80,39 +80,26 @@ public void registrar(Cliente entity) {
 }
 
 @Override
-public void actualizar(Cliente entity) {
-    String sql = "UPDATE Clientes SET identificacion = ?, nombre = ?, apellido = ?, telefono = ?, correo = ?, direccion = ?, proximaVisita = ? " +
-                 "WHERE id = ?";
+public boolean actualizar(Cliente cliente) {
+    String sql = "UPDATE Clientes SET nombre = ?, apellido = ?, telefono = ?, correo = ?, direccion = ?, proxima_visita = ? WHERE identificacion = ?";
 
     try (Connection conn = DatabaseConnection.getConnection();
          PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-        stmt.setString(1, entity.getIdentificacion());
-        stmt.setString(2, entity.getNombre());
-        stmt.setString(3, entity.getApellido());
-        stmt.setString(4, entity.getTelefono());
-        stmt.setString(5, entity.getCorreo());
-        stmt.setString(6, entity.getDireccion());
-
-        // proximaVisita puede ser null
-        java.util.Date visita = entity.getProximaVisita();
-        if (visita != null) {
-            stmt.setDate(7, new java.sql.Date(visita.getTime()));
-        } else {
-            stmt.setNull(7, java.sql.Types.DATE);
-        }
-
-        stmt.setInt(8, entity.getId()); // el ID del cliente que se va a actualizar
+        stmt.setString(1, cliente.getNombre());
+        stmt.setString(2, cliente.getApellido());
+        stmt.setString(3, cliente.getTelefono());
+        stmt.setString(4, cliente.getCorreo());
+        stmt.setString(5, cliente.getDireccion());
+        stmt.setDate(6, new java.sql.Date(cliente.getProximaVisita().getTime()));  // Convertir Date a SQL Date
+        stmt.setString(7, cliente.getIdentificacion());
 
         int rowsAffected = stmt.executeUpdate();
-        if (rowsAffected > 0) {
-            System.out.println(" Cliente actualizado correctamente.");
-        } else {
-            System.out.println("️ No se encontró el cliente con ID: " + entity.getId());
-        }
+        return rowsAffected > 0;  // Si se actualizó al menos una fila, es exitoso
 
     } catch (SQLException e) {
-        System.err.println(" Error al actualizar cliente: " + e.getMessage());
+        e.printStackTrace();
+        return false;  // En caso de error, devolvemos false
     }
 }
 
@@ -146,25 +133,18 @@ public Cliente buscar(Integer id) {
     return cliente;
 }
 
-  public void eliminar(Integer id) {
-    String sql = "DELETE FROM Clientes WHERE id = ?";
-
+public boolean eliminar(int id) {
+    String sql = "DELETE FROM Clientes WHERE identificacion = ?";
     try (Connection conn = DatabaseConnection.getConnection();
          PreparedStatement stmt = conn.prepareStatement(sql)) {
-
+        
         stmt.setInt(1, id);
         int rowsAffected = stmt.executeUpdate();
 
-        if (rowsAffected > 0) {
-            System.out.println("🗑️ Cliente eliminado correctamente.");
-        } else {
-            System.out.println("️ No se encontró ningún cliente con ID: " + id);
-        }
-
+        return rowsAffected > 0;  // Devuelve true si se eliminó al menos un cliente
     } catch (SQLException e) {
-        System.err.println(" Error al eliminar cliente: " + e.getMessage());
+        System.err.println("Error al eliminar cliente: " + e.getMessage());
+        return false; // En caso de error
     }
 }
-    
-    
 }

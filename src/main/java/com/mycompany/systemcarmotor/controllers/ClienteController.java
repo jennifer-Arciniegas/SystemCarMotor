@@ -7,6 +7,7 @@ package com.mycompany.systemcarmotor.controllers;
 import com.mycompany.systemcarmotor.model.Cliente;
 import com.mycompany.systemcarmotor.modelDAO.ClienteDAO;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -27,16 +28,27 @@ public class ClienteController {
         clienteDAO.registrar(cliente);
     }
 
-    public void actualizarCliente(Cliente cliente) {
-        clienteDAO.actualizar(cliente);
+   public boolean actualizarCliente(Cliente cliente) {
+        boolean exito = clienteDAO.actualizar(cliente);  // Llama al DAO para actualizar el cliente
+        if (exito) {
+            // El cliente se actualizó correctamente
+            return true;
+        } else {
+            // Hubo un error al actualizar
+            return false;
+        }
     }
+
+
 
     public Cliente buscarClientePorId(int id) {
         return clienteDAO.buscar(id);
     }
 
-    public void eliminarCliente(int id) {
-        clienteDAO.eliminar(id);
+    public boolean eliminarCliente(int id) {
+    // Llamar al DAO para eliminar al cliente
+        ClienteDAO clienteDAO = new ClienteDAO();
+        return clienteDAO.eliminar(id);  // Devuelve el resultado de la eliminación
     }
 
     

@@ -14,6 +14,6 @@ public interface CRUD<T> {
   
     List<T> listar();
     void registrar(T entity);
-    void actualizar(T entity);
+    boolean actualizar(T entity);
 }
 
