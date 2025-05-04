@@ -115,6 +115,7 @@ public class Vehiculos extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         tbClienteRegister = new javax.swing.JTextField();
         btRegistrar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -150,6 +151,7 @@ public class Vehiculos extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setFocusableWindowState(false);
 
         jLabel1.setText("Gestion vehiculos");
 
@@ -172,6 +174,13 @@ public class Vehiculos extends javax.swing.JFrame {
         btRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btRegistrarActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Home");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -205,7 +214,7 @@ public class Vehiculos extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addGap(18, 18, 18)
-                                .addComponent(tbMarcaRegister, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)))))
+                                .addComponent(tbMarcaRegister, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)))))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(63, 63, 63)
@@ -215,7 +224,11 @@ public class Vehiculos extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(100, 100, 100)
                         .addComponent(btRegistrar)))
-                .addContainerGap(146, Short.MAX_VALUE))
+                .addContainerGap(159, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -237,7 +250,8 @@ public class Vehiculos extends javax.swing.JFrame {
                     .addComponent(jLabel7)
                     .addComponent(tbMarcaRegister, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btRegistrar))
-                .addGap(59, 59, 59))
+                .addGap(36, 36, 36)
+                .addComponent(jButton1))
         );
 
         jTabbedPane1.addTab("Registrar", jPanel1);
@@ -486,6 +500,12 @@ public class Vehiculos extends javax.swing.JFrame {
     private void btnBorrarVehicleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarVehicleActionPerformed
        borrarVehiculo();
     }//GEN-LAST:event_btnBorrarVehicleActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        home ventana1 = new home();
+      ventana1.setVisible(true);
+      this.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
     
     /**
      * @param args the command line arguments
@@ -529,6 +549,7 @@ public class Vehiculos extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscarPlaca;
     private javax.swing.JTextField buscarActualizar;
     private javax.swing.JComboBox<String> cbTipoRegister;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

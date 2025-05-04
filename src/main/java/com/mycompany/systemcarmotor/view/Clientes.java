@@ -237,6 +237,7 @@ public void actualizarCliente() {
         ttBuscaBorrar = new javax.swing.JTextField();
         BorrarCliente = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        btCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -653,6 +654,13 @@ public void actualizarCliente() {
 
         jLabel3.setText("Gestion de Clientes");
 
+        btCancelar.setText("Home");
+        btCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCancelarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -665,6 +673,10 @@ public void actualizarCliente() {
                         .addComponent(jLabel3)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btCancelar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -673,7 +685,9 @@ public void actualizarCliente() {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btCancelar)
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         pack();
@@ -731,6 +745,13 @@ public void actualizarCliente() {
         borrarCliente();
     }//GEN-LAST:event_BorrarClienteActionPerformed
 
+    private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
+      home ventana1 = new home();
+      ventana1.setVisible(true);
+      this.setVisible(false);
+      
+    }//GEN-LAST:event_btCancelarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -768,6 +789,7 @@ public void actualizarCliente() {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BorrarCliente;
+    private javax.swing.JButton btCancelar;
     private javax.swing.JButton btRegistrar;
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnBuscar;
