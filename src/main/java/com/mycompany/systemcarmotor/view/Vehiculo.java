@@ -83,31 +83,25 @@ public class Vehiculo extends javax.swing.JFrame {
     }
     
     private void buscarYActualizarVehiculo() {
-            String placa = buscarActualizar.getText();
+        String placa = buscarActualizar.getText();
     com.mycompany.systemcarmotor.model.Vehiculo vehiculo = vehiculoController.obtenerVehiculoPorPlaca(placa);
-    
     if (vehiculo != null) {
-        // Guardar la placa original para la futura actualización
-        placaOriginal = vehiculo.getPlaca(); // ← AQUÍ
-
-        // Mostrar en la tabla
         DefaultTableModel model = (DefaultTableModel) jTableverActualizar.getModel();
         model.setRowCount(0);
-        model.addRow(new Object[]{
-            vehiculo.getPlaca(),
-            vehiculo.getTipo(),
-            vehiculo.getModelo(),
-            vehiculo.getMarca(),
-            vehiculo.getId_cliente()
-        });
+        model.addRow(new Object[]{vehiculo.getPlaca(), vehiculo.getTipo(), vehiculo.getModelo(), vehiculo.getMarca(), vehiculo.getId_cliente()});
 
-        // Cargar en los campos de edición
+        // Cargar en campos de edición
         tbPlacaRegister.setText(vehiculo.getPlaca());
         cbTipoRegister.setSelectedItem(vehiculo.getTipo());
         tbModeloRegister.setText(vehiculo.getModelo());
         tbMarcaRegister.setText(vehiculo.getMarca());
         tbClienteRegister.setText(String.valueOf(vehiculo.getId_cliente()));
-    }
+
+        // Guardar placa original
+        placaOriginal = vehiculo.getPlaca();
+    } else {
+        JOptionPane.showMessageDialog(this, "Vehículo no encontrado.");
+    }    
    }
     
     
@@ -541,21 +535,24 @@ public class Vehiculo extends javax.swing.JFrame {
         String marca = tbMarcaRegister.getText().trim();
         int idCliente = Integer.parseInt(tbClienteRegister.getText().trim());
 
-        // Validación
         if (nuevaPlaca.isEmpty() || modelo.isEmpty() || marca.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Todos los campos deben estar llenos.");
             return;
         }
 
-        // Llama al controlador con placa original
-        vehiculoController.actualizarVehiculo(
-            placaOriginal, nuevaPlaca, tipo, modelo, marca, idCliente
-        );
+        if (placaOriginal == null || placaOriginal.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe buscar un vehículo antes de actualizar.");
+            return;
+        }
+
+        vehiculoController.actualizarVehiculo(nuevaPlaca, tipo, modelo, marca, idCliente, placaOriginal);
 
         JOptionPane.showMessageDialog(this, "Vehículo actualizado correctamente.");
+
         limpiarcampos();
         actualizarTabla();
 
+        placaOriginal = null; // Limpiar estado
     } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(this, "El ID del cliente debe ser un número válido.");
     } catch (Exception e) {
