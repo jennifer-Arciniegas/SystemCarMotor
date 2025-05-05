@@ -27,10 +27,10 @@ public class DatabaseConnection {
     public static Connection getConnection() {
         if (connection == null) {
             try {
-                connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                System.out.println("✅ Database connected successfully.");
+                return  DriverManager.getConnection(URL, USER, PASSWORD);
             } catch (SQLException e) {
-                System.err.println("❌ Connection failed: " + e.getMessage());
+                System.err.println("Connection failed: " + e.getMessage());
+                return null;
             }
         }
         return connection;

@@ -5,8 +5,6 @@
 package com.mycompany.systemcarmotor.view;
 
 import com.mycompany.systemcarmotor.controllers.VehiculoController;
-
-import com.mycompany.systemcarmotor.model.Vehiculo;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -14,17 +12,19 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author camper
  */
-public class Vehiculos extends javax.swing.JFrame {
-  private VehiculoController vehiculoController;
-
-    public Vehiculos() {
+public class Vehiculo extends javax.swing.JFrame {
+    private VehiculoController vehiculoController;
+    /**
+     * Creates new form Vehiculo
+     */
+    public Vehiculo() {
         initComponents();
         vehiculoController = new VehiculoController();
-       actualizarTabla();  // Llamamos a la función para inicializar la tabla con los vehículos desde el inicio.
+        actualizarTabla();
     }
 
-    // Método para registrar un vehículo
-    private void registrarVehiculo() {
+    
+     private void registrarVehiculo() {
         String placa = tbPlacaRegister.getText();
         String tipo = (String) cbTipoRegister.getSelectedItem();
         String modelo = tbModeloRegister.getText();
@@ -33,51 +33,25 @@ public class Vehiculos extends javax.swing.JFrame {
 
         // Llama al controlador para registrar el vehículo
         vehiculoController.guardarVehiculo(placa, tipo, modelo, marca, idCliente);
-        actualizarTabla(); // Actualiza la tabla con la lista de vehículos después del registro
+         actualizarTabla();
+         limpiarcampos();
+       
     }
-    
-    // Método para buscar y actualizar un vehículo
-    private void buscarYActualizarVehiculo() {
-        String placa = buscarActualizar.getText();
-        Vehiculo vehiculo = vehiculoController.obtenerVehiculoPorPlaca(placa);
-        if (vehiculo != null) {
-            // Si se encuentra el vehículo, llena los campos con sus datos
-            tbPlacaRegister.setText(vehiculo.getPlaca());
-            cbTipoRegister.setSelectedItem(vehiculo.getTipo());
-            tbModeloRegister.setText(vehiculo.getModelo());
-            tbMarcaRegister.setText(vehiculo.getMarca());
-            tbClienteRegister.setText(String.valueOf(vehiculo.getId_cliente()));
-        }
+     
+    private void limpiarcampos(){
+    tbPlacaRegister.setText("");
+    tbModeloRegister.setText("");
+    tbMarcaRegister.setText("");
+    tbClienteRegister.setText("");
     }
-
-    // Método para eliminar un vehículo
-    private void borrarVehiculo() {
-        String placa = tbBorrarVehicle.getText();
-        vehiculoController.eliminarVehiculo(placa);
-        actualizarTabla(); // Actualiza la tabla después de la eliminación
-    }
-
-    // Método para buscar vehículo por placa
-    private void buscarVehiculoPorPlaca() {
-        String placa = tbBuscarPlaca.getText();
-        Vehiculo vehiculo = vehiculoController.obtenerVehiculoPorPlaca(placa);
-        if (vehiculo != null) {
-            // Si el vehículo es encontrado, mostrarlo en la tabla
-            DefaultTableModel model = (DefaultTableModel) jTableBuscarPlaca.getModel();
-            model.setRowCount(0); // Limpiar la tabla antes de agregar los nuevos datos
-            model.addRow(new Object[]{vehiculo.getPlaca(), vehiculo.getTipo(), vehiculo.getModelo(), vehiculo.getMarca(), vehiculo.getId_cliente()});
-        }
-    }
-
-    // Método para actualizar la tabla con los vehículos
-    private void actualizarTabla() {
+      private void actualizarTabla() {
         try {
             // Llama al controlador para obtener todos los vehículos
-            List<Vehiculo> vehiculos = vehiculoController.obtenerTodosVehiculos();
+            List<com.mycompany.systemcarmotor.model.Vehiculo> vehiculos = vehiculoController.obtenerTodosVehiculos();
             DefaultTableModel model = (DefaultTableModel) jTableverVehiculos.getModel();
             model.setRowCount(0); // Limpiar tabla antes de agregar los nuevos datos
 
-            for (Vehiculo vehiculo : vehiculos) {
+            for (com.mycompany.systemcarmotor.model.Vehiculo vehiculo : vehiculos) {
                 // Añadir los vehículos a la tabla
                 model.addRow(new Object[]{vehiculo.getPlaca(), vehiculo.getTipo(), vehiculo.getModelo(), vehiculo.getMarca(), vehiculo.getId_cliente()});
             }
@@ -85,10 +59,8 @@ public class Vehiculos extends javax.swing.JFrame {
             System.err.println("Error actualizando la tabla: " + e.getMessage());
         }
     } 
-    // Inicialización de los componentes de la interfaz
-
-
-    
+      // Método para actualizar la tabla con los vehículos
+   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -98,9 +70,6 @@ public class Vehiculos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -136,23 +105,7 @@ public class Vehiculos extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableBuscarPlaca = new javax.swing.JTable();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setFocusableWindowState(false);
-
-        jLabel1.setText("Gestion vehiculos");
 
         jLabel3.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
         jLabel3.setText("Registro Vehiculo");
@@ -458,45 +411,42 @@ public class Vehiculos extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 839, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(49, Short.MAX_VALUE))
+            .addGap(0, 851, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 839, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(38, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
+            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(38, 38, 38)
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(39, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRegistrarActionPerformed
-        registrarVehiculo();
-    }//GEN-LAST:event_btRegistrarActionPerformed
-
-    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-       buscarVehiculoPorPlaca();
-    }//GEN-LAST:event_btnActualizarActionPerformed
-
-    private void btnBorrarVehicleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarVehicleActionPerformed
-       borrarVehiculo();
-    }//GEN-LAST:event_btnBorrarVehicleActionPerformed
-
     private void tbPlacaRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tbPlacaRegisterActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tbPlacaRegisterActionPerformed
-    
+
+    private void btRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRegistrarActionPerformed
+       registrarVehiculo();
+    }//GEN-LAST:event_btRegistrarActionPerformed
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+       
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnBorrarVehicleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarVehicleActionPerformed
+      
+    }//GEN-LAST:event_btnBorrarVehicleActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -514,20 +464,20 @@ public class Vehiculos extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Vehiculos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Vehiculo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Vehiculos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Vehiculo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Vehiculos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Vehiculo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Vehiculos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Vehiculo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Vehiculos().setVisible(true);
+                new Vehiculo().setVisible(true);
             }
         });
     }
@@ -539,7 +489,6 @@ public class Vehiculos extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscarPlaca;
     private javax.swing.JTextField buscarActualizar;
     private javax.swing.JComboBox<String> cbTipoRegister;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
@@ -555,12 +504,10 @@ public class Vehiculos extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTableBuscarPlaca;
     private javax.swing.JTable jTableverActualizar;
     private javax.swing.JTable jTableverVehiculos;
