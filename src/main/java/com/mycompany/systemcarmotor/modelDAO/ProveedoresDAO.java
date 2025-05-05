@@ -70,5 +70,49 @@ public class ProveedoresDAO {
     }
     return lista;
 }
+    
+    public boolean eliminarProveedorYCalificacion(int idProveedor) {
+    String sqlObtenerCalificacion = "SELECT idCalificacion FROM Proveedores WHERE id = ?";
+    String sqlEliminarProveedor = "DELETE FROM Proveedores WHERE id = ?";
+    String sqlEliminarCalificacion = "DELETE FROM Calificacion WHERE ID = ?";
+
+    try (Connection conn = DatabaseConnection.getConnection()) {
+        conn.setAutoCommit(false);
+
+        int idCalificacion = -1;
+
+        // Obtener ID de calificación primero
+        try (PreparedStatement pst1 = conn.prepareStatement(sqlObtenerCalificacion)) {
+            pst1.setInt(1, idProveedor);
+            ResultSet rs = pst1.executeQuery();
+            if (rs.next()) {
+                idCalificacion = rs.getInt("idCalificacion");
+            } else {
+                throw new SQLException("No se encontró calificación asociada.");
+            }
+        }
+
+        // Eliminar proveedor primero
+        try (PreparedStatement pst2 = conn.prepareStatement(sqlEliminarProveedor)) {
+            pst2.setInt(1, idProveedor);
+            pst2.executeUpdate();
+        }
+
+        // Luego eliminar calificación
+        try (PreparedStatement pst3 = conn.prepareStatement(sqlEliminarCalificacion)) {
+            pst3.setInt(1, idCalificacion);
+            pst3.executeUpdate();
+        }
+
+        conn.commit();
+        return true;
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+
+
 
 }

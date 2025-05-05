@@ -41,6 +41,27 @@ private void cargarTablaProveedores() {
     }
 }
 
+
+private void eliminarProveedor() {
+    try {
+        int id = Integer.parseInt(txtEliminarProveedor.getText().trim());
+
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar este proveedor y su calificación?", "Confirmar", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            boolean exito = ProveedoresDAO.getInstance().eliminarProveedorYCalificacion(id);
+            if (exito) {
+                JOptionPane.showMessageDialog(this, "Proveedor eliminado correctamente.");
+                cargarTablaProveedores(); // refrescar
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo eliminar el proveedor.");
+            }
+        }
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "ID no válido.");
+    }
+}
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -73,6 +94,10 @@ private void cargarTablaProveedores() {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableVerProveedores = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        txtEliminarProveedor = new javax.swing.JTextField();
+        btnBorrar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
@@ -250,6 +275,41 @@ private void cargarTablaProveedores() {
 
         jTabbedPane1.addTab("Ver", jPanel2);
 
+        jLabel11.setText("ID:");
+
+        btnBorrar.setText("Borrar proveedor");
+        btnBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBorrarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jLabel11)
+                .addGap(18, 18, 18)
+                .addComponent(txtEliminarProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(btnBorrar)
+                .addContainerGap(427, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(txtEliminarProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBorrar))
+                .addContainerGap(189, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Eliminar", jPanel3);
+
         jLabel1.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
         jLabel1.setText("Gestion de provedores");
 
@@ -346,6 +406,10 @@ private void cargarTablaProveedores() {
        cargarTablaProveedores();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
+       eliminarProveedor();
+    }//GEN-LAST:event_btnBorrarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -382,6 +446,7 @@ private void cargarTablaProveedores() {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBorrar;
     private javax.swing.JButton btnRegistroProveedor;
     private javax.swing.JComboBox<String> cbCalidad;
     private javax.swing.JComboBox<String> cbCosto;
@@ -391,6 +456,7 @@ private void cargarTablaProveedores() {
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -401,9 +467,11 @@ private void cargarTablaProveedores() {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable tableVerProveedores;
+    private javax.swing.JTextField txtEliminarProveedor;
     private javax.swing.JTextField txtNit;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtTelefono;
