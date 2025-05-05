@@ -15,7 +15,7 @@
 - Uso de `JTabbedPane` para segmentar funcionalidades (Registrar, Ver, Buscar, Eliminar, Actualizar).
 
 ## 📂 Estructura del proyecto
-//
+```
 com.mycompany.systemcarmotor
 ├── model # Clases de entidad (Vehiculo, Cliente, etc.)
 ├── modelDAO # DAO para acceso a datos (VehiculoDAO, etc.)
@@ -23,7 +23,7 @@ com.mycompany.systemcarmotor
 ├── controllers # Coordinadores entre UI y lógica (VehiculoController)
 ├── util # Conexión DB (DatabaseConnection con patrón Singleton)
 └── view # Interfaz Swing (JFrame principal y paneles)
-//
+```
 
 ## 🛠️ Tecnologías utilizadas
 
