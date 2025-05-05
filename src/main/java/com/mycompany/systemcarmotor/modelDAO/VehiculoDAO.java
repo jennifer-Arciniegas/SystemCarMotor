@@ -50,20 +50,20 @@ public class VehiculoDAO  {
     }
 
     // Método para actualizar los detalles de un vehículo por placa
-    public void actualizarVehiculo(Vehiculo vehiculo) throws SQLException {
-        String sql = "UPDATE Vehiculos SET placa = ?, tipo = ?, modelo = ?, marca = ?, id_cliente = ? WHERE placa = ?";
+ public void actualizarVehiculo(Vehiculo vehiculo, String placaOriginal) throws SQLException {
+    String sql = "UPDATE Vehiculos SET placa = ?, tipo = ?, modelo = ?, marca = ?, id_cliente = ? WHERE placa = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, vehiculo.getPlaca());
-            pstmt.setString(2, vehiculo.getTipo());
-            pstmt.setString(3, vehiculo.getModelo());
-            pstmt.setString(4, vehiculo.getMarca());
-            pstmt.setInt(5, vehiculo.getId_cliente());
-            pstmt.setString(6, vehiculo.getPlaca()); // Usar placa para la condición WHERE
-            pstmt.executeUpdate();
-        }
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        pstmt.setString(1, vehiculo.getPlaca());         // Nueva o igual
+        pstmt.setString(2, vehiculo.getTipo());
+        pstmt.setString(3, vehiculo.getModelo());
+        pstmt.setString(4, vehiculo.getMarca());
+        pstmt.setInt(5, vehiculo.getId_cliente());
+        pstmt.setString(6, placaOriginal);               // Placa original para el WHERE
+        pstmt.executeUpdate();
     }
+}
 
     // Método para eliminar un vehículo por placa
     public void eliminarVehiculo(String placa) throws SQLException {

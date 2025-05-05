@@ -3,6 +3,7 @@ package com.mycompany.systemcarmotor.model;
 
 
 public class Vehiculo {
+    
       private int id;
     private String placa;
     private String tipo;

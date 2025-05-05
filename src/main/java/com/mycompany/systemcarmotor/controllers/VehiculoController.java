@@ -37,16 +37,17 @@ public class VehiculoController {
     }
 
     // Método para actualizar un vehículo
-    public void actualizarVehiculo(String placa, String tipo, String modelo, String marca, int idCliente) {
-        try {
-            vehiculoService.actualizarVehiculo(placa, tipo, modelo, marca, idCliente);
-            System.out.println("Vehículo actualizado exitosamente.");
-        } catch (SQLException e) {
-            System.err.println("Error al actualizar vehículo: " + e.getMessage());
-        } catch (IllegalArgumentException e) {
-            System.err.println("Error: " + e.getMessage());
-        }
+public void actualizarVehiculo(String placaOriginal, String nuevaPlaca, String tipo, String modelo, String marca, int idCliente) {
+    try {
+        vehiculoService.actualizarVehiculo(placaOriginal, nuevaPlaca, tipo, modelo, marca, idCliente);
+        System.out.println("Vehículo actualizado exitosamente.");
+    } catch (SQLException e) {
+        System.err.println("Error al actualizar vehículo: " + e.getMessage());
+    } catch (IllegalArgumentException e) {
+        System.err.println("Error: " + e.getMessage());
     }
+}
+
 
     // Método para eliminar un vehículo
     public void eliminarVehiculo(String placa) {

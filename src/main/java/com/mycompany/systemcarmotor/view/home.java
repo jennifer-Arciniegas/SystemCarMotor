@@ -105,7 +105,7 @@ public class home extends javax.swing.JFrame {
     }//GEN-LAST:event_btnClientesActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Vehiculos ventana3 = new Vehiculos();
+        Vehiculo ventana3 = new Vehiculo();
         ventana3.setVisible(true); 
         this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed

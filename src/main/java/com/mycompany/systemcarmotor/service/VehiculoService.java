@@ -32,16 +32,15 @@ public class VehiculoService {
         vehiculoDAO.guardarVehiculo(vehiculo); // Llama al DAO para guardar el vehículo
     }
 
-    // Método para actualizar los detalles de un vehículo por placa
-    public void actualizarVehiculo(String placa, String tipo, String modelo, String marca, int idCliente) throws SQLException {
-        // Validaciones
-        if (placa == null || placa.isEmpty()) {
-            throw new IllegalArgumentException("La placa es obligatoria para actualizar.");
-        }
-
-        Vehiculo vehiculo = new Vehiculo(placa, tipo, modelo, marca, idCliente);
-        vehiculoDAO.actualizarVehiculo(vehiculo); // Llama al DAO para actualizar el vehículo
+  public void actualizarVehiculo(String placaOriginal, String nuevaPlaca, String tipo, String modelo, String marca, int idCliente) throws SQLException {
+    if (nuevaPlaca == null || nuevaPlaca.isEmpty()) {
+        throw new IllegalArgumentException("La nueva placa es obligatoria para actualizar.");
     }
+
+    Vehiculo vehiculo = new Vehiculo(nuevaPlaca, tipo, modelo, marca, idCliente);
+    vehiculoDAO.actualizarVehiculo(vehiculo, placaOriginal);
+}
+
 
     // Método para eliminar un vehículo por placa
     public void eliminarVehiculo(String placa) throws SQLException {

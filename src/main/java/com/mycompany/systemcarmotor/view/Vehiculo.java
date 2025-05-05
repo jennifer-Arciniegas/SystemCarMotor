@@ -6,6 +6,7 @@ package com.mycompany.systemcarmotor.view;
 
 import com.mycompany.systemcarmotor.controllers.VehiculoController;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -14,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Vehiculo extends javax.swing.JFrame {
     private VehiculoController vehiculoController;
+    private String placaOriginal;
     /**
      * Creates new form Vehiculo
      */
@@ -33,6 +35,7 @@ public class Vehiculo extends javax.swing.JFrame {
 
         // Llama al controlador para registrar el vehículo
         vehiculoController.guardarVehiculo(placa, tipo, modelo, marca, idCliente);
+        JOptionPane.showMessageDialog(this, "Vehiculo registrado correctamente.");
          actualizarTabla();
          limpiarcampos();
        
@@ -68,6 +71,7 @@ public class Vehiculo extends javax.swing.JFrame {
             DefaultTableModel model = (DefaultTableModel) jTableBuscarPlaca.getModel();
             model.setRowCount(0); // Limpiar la tabla antes de agregar los nuevos datos
             model.addRow(new Object[]{vehiculo.getPlaca(), vehiculo.getTipo(), vehiculo.getModelo(), vehiculo.getMarca(), vehiculo.getId_cliente()});
+       
         }
     }
     
@@ -75,8 +79,38 @@ public class Vehiculo extends javax.swing.JFrame {
         String placa = tbBorrarVehicle.getText();
         vehiculoController.eliminarVehiculo(placa);
         actualizarTabla(); // Actualiza la tabla después de la eliminación
+         JOptionPane.showMessageDialog(this, "Vehiculo eliminado.");
     }
+    
+    private void buscarYActualizarVehiculo() {
+            String placa = buscarActualizar.getText();
+    com.mycompany.systemcarmotor.model.Vehiculo vehiculo = vehiculoController.obtenerVehiculoPorPlaca(placa);
+    
+    if (vehiculo != null) {
+        // Guardar la placa original para la futura actualización
+        placaOriginal = vehiculo.getPlaca(); // ← AQUÍ
 
+        // Mostrar en la tabla
+        DefaultTableModel model = (DefaultTableModel) jTableverActualizar.getModel();
+        model.setRowCount(0);
+        model.addRow(new Object[]{
+            vehiculo.getPlaca(),
+            vehiculo.getTipo(),
+            vehiculo.getModelo(),
+            vehiculo.getMarca(),
+            vehiculo.getId_cliente()
+        });
+
+        // Cargar en los campos de edición
+        tbPlacaRegister.setText(vehiculo.getPlaca());
+        cbTipoRegister.setSelectedItem(vehiculo.getTipo());
+        tbModeloRegister.setText(vehiculo.getModelo());
+        tbMarcaRegister.setText(vehiculo.getMarca());
+        tbClienteRegister.setText(String.valueOf(vehiculo.getId_cliente()));
+    }
+   }
+    
+    
       // Método para actualizar la tabla con los vehículos
    
     /**
@@ -107,7 +141,8 @@ public class Vehiculo extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         jTableverActualizar = new javax.swing.JTable();
         buscarActualizar = new javax.swing.JTextField();
-        btnActualizar = new javax.swing.JButton();
+        btnbuscar = new javax.swing.JButton();
+        btGuardarCambios = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTableverVehiculos = new javax.swing.JTable();
@@ -242,10 +277,23 @@ public class Vehiculo extends javax.swing.JFrame {
         });
         jScrollPane4.setViewportView(jTableverActualizar);
 
-        btnActualizar.setText("buscar");
-        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+        buscarActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnActualizarActionPerformed(evt);
+                buscarActualizarActionPerformed(evt);
+            }
+        });
+
+        btnbuscar.setText("buscar");
+        btnbuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnbuscarActionPerformed(evt);
+            }
+        });
+
+        btGuardarCambios.setText("Guardar Cambios");
+        btGuardarCambios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btGuardarCambiosActionPerformed(evt);
             }
         });
 
@@ -259,8 +307,12 @@ public class Vehiculo extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(buscarActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
-                .addComponent(btnActualizar)
+                .addComponent(btnbuscar)
                 .addContainerGap(574, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btGuardarCambios)
+                .addGap(99, 99, 99))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(15, 15, 15)
@@ -274,8 +326,10 @@ public class Vehiculo extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(buscarActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnActualizar))
-                .addContainerGap(162, Short.MAX_VALUE))
+                    .addComponent(btnbuscar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 132, Short.MAX_VALUE)
+                .addComponent(btGuardarCambios)
+                .addContainerGap())
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(38, 38, 38)
@@ -462,9 +516,10 @@ public class Vehiculo extends javax.swing.JFrame {
        registrarVehiculo();
     }//GEN-LAST:event_btRegistrarActionPerformed
 
-    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+    private void btnbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscarActionPerformed
        
-    }//GEN-LAST:event_btnActualizarActionPerformed
+        buscarYActualizarVehiculo();
+    }//GEN-LAST:event_btnbuscarActionPerformed
 
     private void btnBorrarVehicleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarVehicleActionPerformed
       borrarVehiculo();
@@ -473,6 +528,40 @@ public class Vehiculo extends javax.swing.JFrame {
     private void btnBuscarPlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarPlacaActionPerformed
        buscarVehiculoPorPlaca();
     }//GEN-LAST:event_btnBuscarPlacaActionPerformed
+
+    private void buscarActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarActualizarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buscarActualizarActionPerformed
+
+    private void btGuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGuardarCambiosActionPerformed
+     try {
+        String nuevaPlaca = tbPlacaRegister.getText().trim();
+        String tipo = (String) cbTipoRegister.getSelectedItem();
+        String modelo = tbModeloRegister.getText().trim();
+        String marca = tbMarcaRegister.getText().trim();
+        int idCliente = Integer.parseInt(tbClienteRegister.getText().trim());
+
+        // Validación
+        if (nuevaPlaca.isEmpty() || modelo.isEmpty() || marca.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Todos los campos deben estar llenos.");
+            return;
+        }
+
+        // Llama al controlador con placa original
+        vehiculoController.actualizarVehiculo(
+            placaOriginal, nuevaPlaca, tipo, modelo, marca, idCliente
+        );
+
+        JOptionPane.showMessageDialog(this, "Vehículo actualizado correctamente.");
+        limpiarcampos();
+        actualizarTabla();
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "El ID del cliente debe ser un número válido.");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al actualizar vehículo: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btGuardarCambiosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -510,10 +599,11 @@ public class Vehiculo extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btGuardarCambios;
     private javax.swing.JButton btRegistrar;
-    private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnBorrarVehicle;
     private javax.swing.JButton btnBuscarPlaca;
+    private javax.swing.JButton btnbuscar;
     private javax.swing.JTextField buscarActualizar;
     private javax.swing.JComboBox<String> cbTipoRegister;
     private javax.swing.JLabel jLabel10;
