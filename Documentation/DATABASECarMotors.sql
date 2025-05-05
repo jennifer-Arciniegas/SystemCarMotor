@@ -15,7 +15,7 @@ CREATE TABLE EstadoServicio (
     nombre ENUM('Pendiente', 'En proceso', 'Completado', 'Entregado') NOT NULL
 );
 CREATE TABLE Calificacion (
-    ID INT PRIMARY KEY,
+    ID INT PRIMARY KEY AUTO_INCREMENT,
     Puntualidad INT,
     Calidad ENUM('normal', 'buena'),
     Costo ENUM('barato', 'estandar', 'elevado')
