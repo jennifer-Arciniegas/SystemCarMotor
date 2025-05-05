@@ -70,6 +70,13 @@ public class Vehiculo extends javax.swing.JFrame {
             model.addRow(new Object[]{vehiculo.getPlaca(), vehiculo.getTipo(), vehiculo.getModelo(), vehiculo.getMarca(), vehiculo.getId_cliente()});
         }
     }
+    
+    private void borrarVehiculo() {
+        String placa = tbBorrarVehicle.getText();
+        vehiculoController.eliminarVehiculo(placa);
+        actualizarTabla(); // Actualiza la tabla después de la eliminación
+    }
+
       // Método para actualizar la tabla con los vehículos
    
     /**
@@ -460,7 +467,7 @@ public class Vehiculo extends javax.swing.JFrame {
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnBorrarVehicleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarVehicleActionPerformed
-      
+      borrarVehiculo();
     }//GEN-LAST:event_btnBorrarVehicleActionPerformed
 
     private void btnBuscarPlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarPlacaActionPerformed
