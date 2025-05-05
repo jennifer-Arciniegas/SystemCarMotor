@@ -44,7 +44,7 @@ public class Vehiculo extends javax.swing.JFrame {
     tbMarcaRegister.setText("");
     tbClienteRegister.setText("");
     }
-      private void actualizarTabla() {
+    private void actualizarTabla() {
         try {
             // Llama al controlador para obtener todos los vehículos
             List<com.mycompany.systemcarmotor.model.Vehiculo> vehiculos = vehiculoController.obtenerTodosVehiculos();
@@ -59,6 +59,17 @@ public class Vehiculo extends javax.swing.JFrame {
             System.err.println("Error actualizando la tabla: " + e.getMessage());
         }
     } 
+    
+    private void buscarVehiculoPorPlaca() {
+        String placa = tbBuscarPlaca.getText();
+        com.mycompany.systemcarmotor.model.Vehiculo vehiculo = vehiculoController.obtenerVehiculoPorPlaca(placa);
+        if (vehiculo != null) {
+            // Si el vehículo es encontrado, mostrarlo en la tabla
+            DefaultTableModel model = (DefaultTableModel) jTableBuscarPlaca.getModel();
+            model.setRowCount(0); // Limpiar la tabla antes de agregar los nuevos datos
+            model.addRow(new Object[]{vehiculo.getPlaca(), vehiculo.getTipo(), vehiculo.getModelo(), vehiculo.getMarca(), vehiculo.getId_cliente()});
+        }
+    }
       // Método para actualizar la tabla con los vehículos
    
     /**
@@ -353,6 +364,11 @@ public class Vehiculo extends javax.swing.JFrame {
         jLabel9.setText("Placa");
 
         btnBuscarPlaca.setText("Buscar");
+        btnBuscarPlaca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarPlacaActionPerformed(evt);
+            }
+        });
 
         jTableBuscarPlaca.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -446,6 +462,10 @@ public class Vehiculo extends javax.swing.JFrame {
     private void btnBorrarVehicleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarVehicleActionPerformed
       
     }//GEN-LAST:event_btnBorrarVehicleActionPerformed
+
+    private void btnBuscarPlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarPlacaActionPerformed
+       buscarVehiculoPorPlaca();
+    }//GEN-LAST:event_btnBuscarPlacaActionPerformed
 
     /**
      * @param args the command line arguments
