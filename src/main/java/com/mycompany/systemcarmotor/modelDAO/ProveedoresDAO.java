@@ -8,7 +8,10 @@ import com.mycompany.systemcarmotor.model.Proveedor;
 import com.mycompany.systemcarmotor.util.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -37,4 +40,35 @@ public class ProveedoresDAO {
             pstmt.executeUpdate();
         }
     }
+    
+    public List<String[]> obtenerProveedoresConCalificacion() throws SQLException {
+    List<String[]> lista = new ArrayList<>();
+    String sql = """
+        SELECT p.id, p.nombre, p.nit, p.telefono, p.frecuencia_suministro, 
+               c.puntualidad, c.calidad, c.costo
+        FROM Proveedores p
+        JOIN Calificacion c ON p.idCalificacion = c.id
+    """;
+
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql);
+         ResultSet rs = pstmt.executeQuery()) {
+
+        while (rs.next()) {
+            String[] fila = {
+                String.valueOf(rs.getInt("id")),
+                rs.getString("nombre"),
+                rs.getString("nit"),
+                rs.getString("telefono"),
+                rs.getString("frecuencia_suministro"),
+                String.valueOf(rs.getInt("puntualidad")),
+                rs.getString("calidad"),
+                rs.getString("costo")
+            };
+            lista.add(fila);
+        }
+    }
+    return lista;
+}
+
 }

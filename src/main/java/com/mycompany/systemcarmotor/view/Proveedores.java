@@ -8,7 +8,9 @@ import com.mycompany.systemcarmotor.model.Calificacion;
 import com.mycompany.systemcarmotor.model.Proveedor;
 import com.mycompany.systemcarmotor.modelDAO.CalificacionDAO;
 import com.mycompany.systemcarmotor.modelDAO.ProveedoresDAO;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -22,6 +24,22 @@ public class Proveedores extends javax.swing.JFrame {
     public Proveedores() {
         initComponents();
     }
+    
+    
+private void cargarTablaProveedores() {
+    try {
+        DefaultTableModel model = (DefaultTableModel) tableVerProveedores.getModel();
+        model.setRowCount(0); // limpia tabla
+        List<String[]> lista = ProveedoresDAO.getInstance().obtenerProveedoresConCalificacion();
+
+        for (String[] fila : lista) {
+            model.addRow(fila);
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error cargando proveedores: " + e.getMessage());
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -53,7 +71,8 @@ public class Proveedores extends javax.swing.JFrame {
         btnRegistroProveedor = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableVerProveedores = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
@@ -177,7 +196,7 @@ public class Proveedores extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Registrar", jPanel1);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableVerProveedores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null},
@@ -196,23 +215,37 @@ public class Proveedores extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tableVerProveedores);
+
+        jButton2.setText("ver");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 709, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 709, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jButton2)))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(11, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addGap(21, 21, 21))
         );
 
         jTabbedPane1.addTab("Ver", jPanel2);
@@ -309,6 +342,10 @@ public class Proveedores extends javax.swing.JFrame {
       this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       cargarTablaProveedores();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -351,6 +388,7 @@ public class Proveedores extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbFrecuencia;
     private javax.swing.JComboBox<String> cbPuntualidad;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -365,7 +403,7 @@ public class Proveedores extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tableVerProveedores;
     private javax.swing.JTextField txtNit;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtTelefono;
