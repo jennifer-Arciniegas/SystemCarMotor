@@ -1,45 +1,92 @@
-# 🚗 SystemCarMotor
+# CarMotors - Automotive Workshop Management System
 
-**SystemCarMotor** es un sistema integral para la gestión de un taller automotriz, desarrollado en Java con Swing y MySQL. Permite registrar, visualizar, buscar, actualizar y eliminar vehículos, además de gestionar el inventario, clientes, proveedores y servicios técnicos.
 
-## ✅ Funcionalidades actuales
+Overview
 
-- Registro de vehículos.
-- Búsqueda de vehículos por placa.
-- Visualización general de vehículos.
-- Actualización de datos del vehículo (placa, tipo, modelo, marca, cliente).
-- Eliminación de vehículos.
-- Conexión a base de datos MySQL usando patrón Singleton.
-- Patrón DAO aplicado para la gestión de `Vehiculo`.
-- Arquitectura modular por componente (MVC por módulo).
-- Uso de `JTabbedPane` para segmentar funcionalidades (Registrar, Ver, Buscar, Eliminar, Actualizar).
+CarMotors is a Java-based desktop application designed to manage the operations of an automotive workshop. The system handles inventory, maintenance services, client and supplier records, invoicing, and technician assignments. The application is built using Java Swing and follows the MVC architectural pattern, enhanced with design patterns like Singleton, Builder, Factory, State, Strategy, and Facade.
 
-## 📂 Estructura del proyecto
-```
-com.mycompany.systemcarmotor
-├── model # Clases de entidad (Vehiculo, Cliente, etc.)
-├── modelDAO # DAO para acceso a datos (VehiculoDAO, etc.)
-├── services # Lógica de negocio (VehiculoService)
-├── controllers # Coordinadores entre UI y lógica (VehiculoController)
-├── util # Conexión DB (DatabaseConnection con patrón Singleton)
-└── view # Interfaz Swing (JFrame principal y paneles)
-```
+## Features
 
-## 🛠️ Tecnologías utilizadas
+- Client Management: Register, update, and delete client records.
 
-- **Java** (versión 17)
-- **Swing** (Java GUI)
-- **MySQL** (base de datos local)
-- **NetBeans** como entorno de desarrollo
-- **Patrones aplicados**: Singleton, DAO, (Builder y Factory en otros módulos)
+- Vehicle Management: Assign and manage client vehicles.
 
-## 📦 Dependencias necesarias
+- Inventory Management: Register and track spare parts, including batch tracking.
 
-- MySQL JDBC Driver (ya incluido en NetBeans si se configura bien el proyecto)
-- Base de datos local llamada `CarMotors` con tabla `Vehiculos`
+- Maintenance Services: Schedule and record services with type and subtype of maintenance.
 
-## 📝 Notas
+- Service Status Tracking: States include Pending, In Process, Completed, and Delivered.
 
-- Los registros deben tener una placa única.
-- La placa original se utiliza para permitir actualizaciones sin conflicto.
-- A futuro se conectarán módulos de clientes, repuestos, órdenes y facturación.
+- Technician Productivity Reports: Calculate average service time and total services completed.
+
+- Supplier Management: Register suppliers along with performance ratings.
+
+- Invoicing System: Automatically generates invoices and PDFs with embedded QR codes.
+
+- Discount System: Strategy pattern implementation for dynamic discount calculation.
+
+- Facade Integration: Encapsulates operations such as service execution involving technicians, spare parts usage, and labor costs.
+
+##Architecture
+
+- Language: Java (JDK 17+)
+
+- GUI: Java Swing
+
+- Database: MySQL
+
+- Pattern Used:
+
+- Singleton: For database connection
+
+- Builder: For constructing domain models (Client, Vehicle, Service, Invoice...)
+
+- Factory: For creating Client/Supplier instances
+
+- State: To manage SparePart availability
+
+- Strategy: For discount calculation
+
+- Facade: For unified service processing (technician + labor + spare parts)
+Database
+
+## The database 
+schema includes the following key tables:
+
+- Clientes, Vehiculos, Repuestos, Lotes, Proveedores, Calificacion
+
+- Servicios, EstadoServicio, TipoMantenimiento, Mano_de_obra, Uso_Repuestos
+
+- Facturas, TallerInformacion, Ordenes_Compra, Inspecciones_Tecnicas
+
+Triggers and views support productivity reports and filtered service queries.
+
+## Setup
+
+- Clone the repository.
+
+- Open the project in NetBeans or IntelliJ.
+
+- Import the SQL schema located in /sql/schema.sql into MySQL.
+
+- Ensure your database connection credentials match those in DatabaseConnection.java.
+
+- Build and run the project.
+
+
+
+## Folder Structure
+
+- com.mycompany.systemcarmotor
+
+- view: Swing interfaces
+
+- model: Entity classes
+
+- dao: Data access objects
+
+- controllers: Logic controllers
+
+- services: Business services
+
+- builder, factory, strategy, state, facade: Design pattern implementations
