@@ -8,7 +8,10 @@ import com.mycompany.systemcarmotor.model.Repuesto;
 import com.mycompany.systemcarmotor.util.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -48,4 +51,38 @@ public class RepuestoDAO {
             pstmt.executeUpdate();
         }
     }
+    
+    public List<Repuesto> obtenerTodos() throws SQLException {
+    List<Repuesto> lista = new ArrayList<>();
+
+    String sql = "SELECT r.id, r.nombre, r.tipo, r.marca, r.modelo, r.cantidad, r.fecha_ingreso, r.vida_util_estimada, " +
+                 "e.nombre AS estado, p.nombre AS proveedor " +
+                 "FROM Repuestos r " +
+                 "JOIN EstadoRepuesto e ON r.id_estado = e.id " +
+                 "JOIN Proveedores p ON r.id_proveedor = p.id";
+
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery()) {
+
+        while (rs.next()) {
+            Repuesto r = new Repuesto();
+            r.setId(rs.getInt("id"));
+            r.setNombre(rs.getString("nombre"));
+            r.setTipo(rs.getString("tipo"));
+            r.setMarca(rs.getString("marca"));
+            r.setModelo(rs.getString("modelo"));
+            r.setCantidad(rs.getInt("cantidad"));
+            r.setFechaIngreso(rs.getDate("fecha_ingreso"));
+            r.setVidaUtilEstimada(rs.getInt("vida_util_estimada"));
+            r.setEstado(rs.getString("estado")); // Nuevo campo
+            r.setProveedor(rs.getString("proveedor")); // Nuevo campo
+
+            lista.add(r);
+        }
+    }
+
+    return lista;
+}
+
 }

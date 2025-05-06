@@ -11,7 +11,7 @@ import java.util.Date;
  * @author camper
  */
 public class Repuesto {
-
+    private int id;
     private String nombre;
     private String tipo;
     private String marca;
@@ -21,7 +21,16 @@ public class Repuesto {
     private int vidaUtilEstimada;
     private int idEstado;
     private int idProveedor;
+    
+    private String estado;
+    private String proveedor;
 
+    public Repuesto() {
+    }
+
+    
+    
+    
     public Repuesto(String nombre, String tipo, String marca, String modelo, int cantidad, Date fechaIngreso, int vidaUtilEstimada, int idEstado, int idProveedor) {
         this.nombre = nombre;
         this.tipo = tipo;
@@ -34,7 +43,12 @@ public class Repuesto {
         this.idProveedor = idProveedor;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+    
 
+   
 
     public String getNombre() {
         return nombre;
@@ -106,6 +120,22 @@ public class Repuesto {
 
     public void setIdProveedor(int idProveedor) {
         this.idProveedor = idProveedor;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getProveedor() {
+        return proveedor;
+    }
+
+    public void setProveedor(String proveedor) {
+        this.proveedor = proveedor;
     }
     
     
