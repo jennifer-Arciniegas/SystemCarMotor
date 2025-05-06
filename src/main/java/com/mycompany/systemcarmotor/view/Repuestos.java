@@ -16,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
  * @author camper
  */
 public class Repuestos extends javax.swing.JFrame {
+
     private RepuestoController repuestoController = new RepuestoController();
 
     /**
@@ -24,49 +25,46 @@ public class Repuestos extends javax.swing.JFrame {
     public Repuestos() {
         initComponents();
     }
+
     private void limpiarCampos() {
-    txtNombre.setText("");
-    txtMarca.setText("");
-    txtModelo.setText("");
-    txtCantidad.setText("");
-    txtVidaUtil.setText("");
-    txtIdProveedor.setText("");
-    spinnerFechaIngreso.setValue(new Date());
-}
-    
-    
-    private void cargarTablaRepuestos() {
-    try {
-        // Obtiene la lista de repuestos desde el controlador
-     List<Repuesto> lista = repuestoController.obtenerTodosLosRepuestos();
-
-
-
-        // Modelo de la tabla
-        DefaultTableModel modelo = (DefaultTableModel) jTableVerTodos.getModel();
-        modelo.setRowCount(0); // Limpia la tabla
-
-        // Agrega cada repuesto a la tabla
-        for (Repuesto r : lista) {
-            modelo.addRow(new Object[]{
-                r.getId(),
-                r.getNombre(),
-                r.getTipo(),
-                r.getMarca(),
-                r.getModelo(),
-                r.getCantidad(),
-                r.getFechaIngreso(),
-                r.getVidaUtilEstimada(),
-                r.getEstado(),      // <- aquí se muestra el nombre del estado
-                r.getProveedor()    // <- aquí se muestra el nombre del proveedor
-            });
-        }
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al cargar repuestos: " + e.getMessage());
+        txtNombre.setText("");
+        txtMarca.setText("");
+        txtModelo.setText("");
+        txtCantidad.setText("");
+        txtVidaUtil.setText("");
+        txtIdProveedor.setText("");
+        spinnerFechaIngreso.setValue(new Date());
     }
-}
 
+    private void cargarTablaRepuestos() {
+        try {
+            // Obtiene la lista de repuestos desde el controlador
+            List<Repuesto> lista = repuestoController.obtenerTodosLosRepuestos();
+
+            // Modelo de la tabla
+            DefaultTableModel modelo = (DefaultTableModel) jTableVerTodos.getModel();
+            modelo.setRowCount(0); // Limpia la tabla
+
+            // Agrega cada repuesto a la tabla
+            for (Repuesto r : lista) {
+                modelo.addRow(new Object[]{
+                    r.getId(),
+                    r.getNombre(),
+                    r.getTipo(),
+                    r.getMarca(),
+                    r.getModelo(),
+                    r.getCantidad(),
+                    r.getFechaIngreso(),
+                    r.getVidaUtilEstimada(),
+                    r.getEstado(), // <- aquí se muestra el nombre del estado
+                    r.getProveedor() // <- aquí se muestra el nombre del proveedor
+                });
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar repuestos: " + e.getMessage());
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -325,38 +323,37 @@ public class Repuestos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btRegistrarRepuestosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRegistrarRepuestosActionPerformed
-      
-         try {
-        String nombre = txtNombre.getText().trim();
-        String tipo = cbTipo.getSelectedItem().toString();
-        String marca = txtMarca.getText().trim();
-        String modelo = txtModelo.getText().trim();
-        int cantidad = Integer.parseInt(txtCantidad.getText().trim());
-        int vidaUtil = Integer.parseInt(txtVidaUtil.getText().trim());
-        int idProveedor = Integer.parseInt(txtIdProveedor.getText().trim());
 
-        // Convertir la fecha del spinner a java.util.Date
-        Date fechaIngreso = (Date) spinnerFechaIngreso.getValue();
+        try {
+            String nombre = txtNombre.getText().trim();
+            String tipo = cbTipo.getSelectedItem().toString();
+            String marca = txtMarca.getText().trim();
+            String modelo = txtModelo.getText().trim();
+            int cantidad = Integer.parseInt(txtCantidad.getText().trim());
+            int vidaUtil = Integer.parseInt(txtVidaUtil.getText().trim());
+            int idProveedor = Integer.parseInt(txtIdProveedor.getText().trim());
 
-        RepuestoController controller = new RepuestoController();
-        controller.registrarRepuesto(
-            nombre, tipo, marca, modelo, cantidad, fechaIngreso, vidaUtil, idProveedor
-        );
+            // Convertir la fecha del spinner a java.util.Date
+            Date fechaIngreso = (Date) spinnerFechaIngreso.getValue();
 
+            RepuestoController controller = new RepuestoController();
+            controller.registrarRepuesto(
+                    nombre, tipo, marca, modelo, cantidad, fechaIngreso, vidaUtil, idProveedor
+            );
 
-        JOptionPane.showMessageDialog(this, "Repuesto registrado correctamente.");
+            JOptionPane.showMessageDialog(this, "Repuesto registrado correctamente.");
 
-        // Opcional: limpiar campos
-        limpiarCampos();
+            // Opcional: limpiar campos
+            limpiarCampos();
 
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al registrar: " + e.getMessage());
-        e.printStackTrace();
-    }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al registrar: " + e.getMessage());
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btRegistrarRepuestosActionPerformed
 
     private void btnVerTodosRepuestosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerTodosRepuestosActionPerformed
-       cargarTablaRepuestos();
+        cargarTablaRepuestos();
     }//GEN-LAST:event_btnVerTodosRepuestosActionPerformed
 
     /**

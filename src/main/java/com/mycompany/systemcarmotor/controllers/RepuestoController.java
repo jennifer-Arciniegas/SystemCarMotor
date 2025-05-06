@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class RepuestoController {
     private RepuestoService repuestoService;
-    private RepuestoController repuestoController = new RepuestoController();
+    private RepuestoController repuestoController;
 
 
     public RepuestoController() {

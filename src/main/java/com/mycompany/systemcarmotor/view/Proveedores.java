@@ -24,43 +24,41 @@ public class Proveedores extends javax.swing.JFrame {
     public Proveedores() {
         initComponents();
     }
-    
-    
-private void cargarTablaProveedores() {
-    try {
-        DefaultTableModel model = (DefaultTableModel) tableVerProveedores.getModel();
-        model.setRowCount(0); // limpia tabla
-        List<String[]> lista = ProveedoresDAO.getInstance().obtenerProveedoresConCalificacion();
 
-        for (String[] fila : lista) {
-            model.addRow(fila);
-        }
+    private void cargarTablaProveedores() {
+        try {
+            DefaultTableModel model = (DefaultTableModel) tableVerProveedores.getModel();
+            model.setRowCount(0); // limpia tabla
+            List<String[]> lista = ProveedoresDAO.getInstance().obtenerProveedoresConCalificacion();
 
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error cargando proveedores: " + e.getMessage());
-    }
-}
-
-
-private void eliminarProveedor() {
-    try {
-        int id = Integer.parseInt(txtEliminarProveedor.getText().trim());
-
-        int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar este proveedor y su calificación?", "Confirmar", JOptionPane.YES_NO_OPTION);
-        if (confirm == JOptionPane.YES_OPTION) {
-            boolean exito = ProveedoresDAO.getInstance().eliminarProveedorYCalificacion(id);
-            if (exito) {
-                JOptionPane.showMessageDialog(this, "Proveedor eliminado correctamente.");
-                cargarTablaProveedores(); // refrescar
-            } else {
-                JOptionPane.showMessageDialog(this, "No se pudo eliminar el proveedor.");
+            for (String[] fila : lista) {
+                model.addRow(fila);
             }
-        }
 
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "ID no válido.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error cargando proveedores: " + e.getMessage());
+        }
     }
-}
+
+    private void eliminarProveedor() {
+        try {
+            int id = Integer.parseInt(txtEliminarProveedor.getText().trim());
+
+            int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar este proveedor y su calificación?", "Confirmar", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                boolean exito = ProveedoresDAO.getInstance().eliminarProveedorYCalificacion(id);
+                if (exito) {
+                    JOptionPane.showMessageDialog(this, "Proveedor eliminado correctamente.");
+                    cargarTablaProveedores(); // refrescar
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se pudo eliminar el proveedor.");
+                }
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ID no válido.");
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -353,61 +351,60 @@ private void eliminarProveedor() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistroProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroProveedorActionPerformed
-          try {
-        // Obtener datos de la vista
-        String nombre = txtNombre.getText().trim();
-        String nit = txtNit.getText().trim();
-        String telefono = txtTelefono.getText().trim();
-        String frecuencia = (String) cbFrecuencia.getSelectedItem();
-        
-        int puntualidad = cbPuntualidad.getSelectedIndex() + 1; // Suponiendo escala 1-5 o 1-3
-        String calidad = (String) cbCalidad.getSelectedItem();
-        String costo = (String) cbCosto.getSelectedItem();
+        try {
+            // Obtener datos de la vista
+            String nombre = txtNombre.getText().trim();
+            String nit = txtNit.getText().trim();
+            String telefono = txtTelefono.getText().trim();
+            String frecuencia = (String) cbFrecuencia.getSelectedItem();
 
-        // Validar campos obligatorios
-        if (nombre.isEmpty() || nit.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Nombre y NIT son obligatorios.");
-            return;
+            int puntualidad = cbPuntualidad.getSelectedIndex() + 1; // Suponiendo escala 1-5 o 1-3
+            String calidad = (String) cbCalidad.getSelectedItem();
+            String costo = (String) cbCosto.getSelectedItem();
+
+            // Validar campos obligatorios
+            if (nombre.isEmpty() || nit.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Nombre y NIT son obligatorios.");
+                return;
+            }
+
+            // Registrar calificación
+            Calificacion calificacion = new Calificacion(0, puntualidad, calidad, costo); // el ID es autoincremental
+            int idCalificacion = CalificacionDAO.getInstance().guardarYObtenerID(calificacion);
+
+            // Registrar proveedor
+            Proveedor proveedor = new Proveedor(nombre, nit, telefono, frecuencia, idCalificacion);
+            ProveedoresDAO.getInstance().guardar(proveedor);
+
+            JOptionPane.showMessageDialog(this, "Proveedor registrado exitosamente.");
+
+            // Limpiar campos
+            txtNombre.setText("");
+            txtNit.setText("");
+            txtTelefono.setText("");
+            cbFrecuencia.setSelectedIndex(0);
+            cbPuntualidad.setSelectedIndex(0);
+            cbCalidad.setSelectedIndex(0);
+            cbCosto.setSelectedIndex(0);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al registrar proveedor: " + e.getMessage());
         }
 
-        // Registrar calificación
-        Calificacion calificacion = new Calificacion(0, puntualidad, calidad, costo); // el ID es autoincremental
-        int idCalificacion = CalificacionDAO.getInstance().guardarYObtenerID(calificacion);
-
-        // Registrar proveedor
-        Proveedor proveedor = new Proveedor(nombre, nit, telefono, frecuencia, idCalificacion);
-        ProveedoresDAO.getInstance().guardar(proveedor);
-
-        JOptionPane.showMessageDialog(this, "Proveedor registrado exitosamente.");
-
-        // Limpiar campos
-        txtNombre.setText("");
-        txtNit.setText("");
-        txtTelefono.setText("");
-        cbFrecuencia.setSelectedIndex(0);
-        cbPuntualidad.setSelectedIndex(0);
-        cbCalidad.setSelectedIndex(0);
-        cbCosto.setSelectedIndex(0);
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al registrar proveedor: " + e.getMessage());
-    }
-        
-        
     }//GEN-LAST:event_btnRegistroProveedorActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      home ventana1 = new home();
-      ventana1.setVisible(true);
-      this.setVisible(false);
+        home ventana1 = new home();
+        ventana1.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       cargarTablaProveedores();
+        cargarTablaProveedores();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
-       eliminarProveedor();
+        eliminarProveedor();
     }//GEN-LAST:event_btnBorrarActionPerformed
 
     /**

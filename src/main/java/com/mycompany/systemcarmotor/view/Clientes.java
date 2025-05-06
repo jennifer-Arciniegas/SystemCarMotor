@@ -9,8 +9,6 @@ import com.mycompany.systemcarmotor.model.Cliente;
 import java.util.Date;
 import javax.swing.JOptionPane;
 
-
-
 /**
  *
  * @author camper
@@ -23,150 +21,145 @@ public class Clientes extends javax.swing.JFrame {
     public Clientes() {
         initComponents();
         btRegistrar.addActionListener(e -> registrarCliente());
-        
 
     }
+
     private void registrarCliente() {
-    // Captura los datos de los campos
-    String identificacion = tbIdentificacion.getText();
-    String nombre = tbnombre.getText();
-    String apellido = tbapellido.getText();
-    String telefono = tbTelefono.getText();
-    String correo = tbCorreo.getText();
-    String direccion = tbDireccion.getText();
-    Date proximaVisita = (Date) jSpinnerfecha.getValue(); // Obtiene la fecha del JSpinner
+        // Captura los datos de los campos
+        String identificacion = tbIdentificacion.getText();
+        String nombre = tbnombre.getText();
+        String apellido = tbapellido.getText();
+        String telefono = tbTelefono.getText();
+        String correo = tbCorreo.getText();
+        String direccion = tbDireccion.getText();
+        Date proximaVisita = (Date) jSpinnerfecha.getValue(); // Obtiene la fecha del JSpinner
 
-    // Verificar que todos los campos están completos (opcional)
-    if (identificacion.isEmpty() || nombre.isEmpty() || apellido.isEmpty() ||
-        telefono.isEmpty() || correo.isEmpty() || direccion.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
-        return;
-    }
-
-    // Crear el objeto Cliente
-    Cliente cliente = new Cliente();
-    cliente.setIdentificacion(identificacion);
-    cliente.setNombre(nombre);
-    cliente.setApellido(apellido);
-    cliente.setTelefono(telefono);
-    cliente.setCorreo(correo);
-    cliente.setDireccion(direccion);
-    cliente.setProximaVisita(proximaVisita);
-
-    // Llamar al controlador para registrar el cliente
-    ClienteController controller = new ClienteController();
-    controller.registrarCliente(cliente);
-
-    // Mostrar mensaje de éxito
-    JOptionPane.showMessageDialog(this, "Cliente registrado correctamente.");
-    limpiarCampos();
-}
-    
-    private void limpiarCampos() {
-    tbIdentificacion.setText(""); // Limpia el campo de identificación
-    tbnombre.setText(""); // Limpia el campo de nombre
-    tbapellido.setText(""); // Limpia el campo de apellido
-    tbTelefono.setText(""); // Limpia el campo de teléfono
-    tbCorreo.setText(""); // Limpia el campo de correo
-    tbDireccion.setText(""); // Limpia el campo de dirección
-    jSpinnerfecha.setValue(new Date()); // Limpia la fecha del JSpinner, asignando la fecha actual por defecto
-}
-
-private void buscarCliente() {
-    try {
-        // Obtener el ID desde el campo de texto
-        int id = Integer.parseInt(txtIdBuscar.getText());  // Aquí se obtiene el ID ingresado por el usuario
-
-        // Usar el ClienteController para buscar al cliente
-        ClienteController controller = new ClienteController();
-        Cliente cliente = controller.buscarClientePorId(id);  // Llamamos al controlador para obtener el cliente por ID
-
-        // Si el cliente es encontrado, mostramos sus datos en los JLabel
-        if (cliente != null) {
-            lblIdent.setText(cliente.getIdentificacion());
-            lblNombre.setText(cliente.getNombre());
-            lblApellido.setText(cliente.getApellido());
-            lblTelefono.setText(cliente.getTelefono());
-            lblCorreo.setText(cliente.getCorreo());
-            lblDireccion.setText(cliente.getDireccion());
-            lblVisita.setText(cliente.getProximaVisita() != null ? cliente.getProximaVisita().toString() : "N/A");
-        } else {
-            // Si no se encuentra el cliente
-            JOptionPane.showMessageDialog(this, "Cliente no encontrado.");
-            limpiarCampos(); // Limpiar los campos de los resultados de la búsqueda
-        }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "ID inválido. Debe ser un número.");
-    }
-}
-
-
-private void borrarCliente() {
-    try {
-        String identificacion = ttBuscaBorrar.getText();  // Obtener ID desde el campo de texto
-        if (identificacion.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, ingrese un ID.");
+        // Verificar que todos los campos están completos (opcional)
+        if (identificacion.isEmpty() || nombre.isEmpty() || apellido.isEmpty()
+                || telefono.isEmpty() || correo.isEmpty() || direccion.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
             return;
         }
 
-        // Llamamos al controlador para eliminar el cliente
-        ClienteController controller = new ClienteController();
-        boolean exito = controller.eliminarCliente(Integer.parseInt(identificacion)); // Verifica el resultado de la eliminación
+        // Crear el objeto Cliente
+        Cliente cliente = new Cliente();
+        cliente.setIdentificacion(identificacion);
+        cliente.setNombre(nombre);
+        cliente.setApellido(apellido);
+        cliente.setTelefono(telefono);
+        cliente.setCorreo(correo);
+        cliente.setDireccion(direccion);
+        cliente.setProximaVisita(proximaVisita);
 
-        if (exito) {
-            JOptionPane.showMessageDialog(this, "Cliente eliminado correctamente.");
-        } else {
-            JOptionPane.showMessageDialog(this, "Error al eliminar el cliente.");
+        // Llamar al controlador para registrar el cliente
+        ClienteController controller = new ClienteController();
+        controller.registrarCliente(cliente);
+
+        // Mostrar mensaje de éxito
+        JOptionPane.showMessageDialog(this, "Cliente registrado correctamente.");
+        limpiarCampos();
+    }
+
+    private void limpiarCampos() {
+        tbIdentificacion.setText(""); // Limpia el campo de identificación
+        tbnombre.setText(""); // Limpia el campo de nombre
+        tbapellido.setText(""); // Limpia el campo de apellido
+        tbTelefono.setText(""); // Limpia el campo de teléfono
+        tbCorreo.setText(""); // Limpia el campo de correo
+        tbDireccion.setText(""); // Limpia el campo de dirección
+        jSpinnerfecha.setValue(new Date()); // Limpia la fecha del JSpinner, asignando la fecha actual por defecto
+    }
+
+    private void buscarCliente() {
+        try {
+            // Obtener el ID desde el campo de texto
+            int id = Integer.parseInt(txtIdBuscar.getText());  // Aquí se obtiene el ID ingresado por el usuario
+
+            // Usar el ClienteController para buscar al cliente
+            ClienteController controller = new ClienteController();
+            Cliente cliente = controller.buscarClientePorId(id);  // Llamamos al controlador para obtener el cliente por ID
+
+            // Si el cliente es encontrado, mostramos sus datos en los JLabel
+            if (cliente != null) {
+                lblIdent.setText(cliente.getIdentificacion());
+                lblNombre.setText(cliente.getNombre());
+                lblApellido.setText(cliente.getApellido());
+                lblTelefono.setText(cliente.getTelefono());
+                lblCorreo.setText(cliente.getCorreo());
+                lblDireccion.setText(cliente.getDireccion());
+                lblVisita.setText(cliente.getProximaVisita() != null ? cliente.getProximaVisita().toString() : "N/A");
+            } else {
+                // Si no se encuentra el cliente
+                JOptionPane.showMessageDialog(this, "Cliente no encontrado.");
+                limpiarCampos(); // Limpiar los campos de los resultados de la búsqueda
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ID inválido. Debe ser un número.");
+        }
+    }
+
+    private void borrarCliente() {
+        try {
+            String identificacion = ttBuscaBorrar.getText();  // Obtener ID desde el campo de texto
+            if (identificacion.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Por favor, ingrese un ID.");
+                return;
+            }
+
+            // Llamamos al controlador para eliminar el cliente
+            ClienteController controller = new ClienteController();
+            boolean exito = controller.eliminarCliente(Integer.parseInt(identificacion)); // Verifica el resultado de la eliminación
+
+            if (exito) {
+                JOptionPane.showMessageDialog(this, "Cliente eliminado correctamente.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al eliminar el cliente.");
+            }
+
+            limpiarCampos(); // Limpiar campos después de borrar
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ID inválido. Debe ser un número.");
+        }
+    }
+
+    public void actualizarCliente() {
+        // Captura los datos desde la vista
+        String identificacion = txtIdentificacion.getText();
+        String nombre = txtNombre.getText();
+        String apellido = txtApellido.getText();
+        String telefono = txtTelefono.getText();
+        String correo = txtCorreo.getText();
+        String direccion = txtDireccion.getText();
+        Date proximaVisita = (Date) jSpinner1.getValue();
+
+        // Verificar si los campos no están vacíos
+        if (identificacion.isEmpty() || nombre.isEmpty() || apellido.isEmpty()
+                || telefono.isEmpty() || correo.isEmpty() || direccion.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
+            return;
         }
 
-        limpiarCampos(); // Limpiar campos después de borrar
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "ID inválido. Debe ser un número.");
-    }
-}
+        // Crear el objeto Cliente
+        Cliente cliente = new Cliente();
+        cliente.setIdentificacion(identificacion);
+        cliente.setNombre(nombre);
+        cliente.setApellido(apellido);
+        cliente.setTelefono(telefono);
+        cliente.setCorreo(correo);
+        cliente.setDireccion(direccion);
+        cliente.setProximaVisita(proximaVisita);
 
+        // Llamamos al controlador para actualizar
+        ClienteController controller = new ClienteController();
+        boolean exito = controller.actualizarCliente(cliente);  // Llama al método actualizarCliente
 
-public void actualizarCliente() {
-    // Captura los datos desde la vista
-    String identificacion = txtIdentificacion.getText();
-    String nombre = txtNombre.getText();
-    String apellido = txtApellido.getText();
-    String telefono = txtTelefono.getText();
-    String correo = txtCorreo.getText();
-    String direccion = txtDireccion.getText();
-    Date proximaVisita = (Date) jSpinner1.getValue();
-
-    // Verificar si los campos no están vacíos
-    if (identificacion.isEmpty() || nombre.isEmpty() || apellido.isEmpty() ||
-        telefono.isEmpty() || correo.isEmpty() || direccion.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
-        return;
+        if (exito) {
+            JOptionPane.showMessageDialog(this, "Cliente actualizado correctamente.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al actualizar el cliente.");
+        }
     }
 
-    // Crear el objeto Cliente
-    Cliente cliente = new Cliente();
-    cliente.setIdentificacion(identificacion);
-    cliente.setNombre(nombre);
-    cliente.setApellido(apellido);
-    cliente.setTelefono(telefono);
-    cliente.setCorreo(correo);
-    cliente.setDireccion(direccion);
-    cliente.setProximaVisita(proximaVisita);
-
-    // Llamamos al controlador para actualizar
-    ClienteController controller = new ClienteController();
-    boolean exito = controller.actualizarCliente(cliente);  // Llama al método actualizarCliente
-
-    if (exito) {
-        JOptionPane.showMessageDialog(this, "Cliente actualizado correctamente.");
-    } else {
-        JOptionPane.showMessageDialog(this, "Error al actualizar el cliente.");
-    }
-}
-
-
-    
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -722,8 +715,8 @@ public void actualizarCliente() {
     }//GEN-LAST:event_tbapellidoActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-       
-         buscarCliente();
+
+        buscarCliente();
 
     }//GEN-LAST:event_btnBuscarActionPerformed
 
@@ -732,9 +725,7 @@ public void actualizarCliente() {
     }//GEN-LAST:event_txtNombreActionPerformed
 
     private void buscaraActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscaraActualizarActionPerformed
-      
-            
-        
+
     }//GEN-LAST:event_buscaraActualizarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
@@ -746,10 +737,10 @@ public void actualizarCliente() {
     }//GEN-LAST:event_BorrarClienteActionPerformed
 
     private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
-      home ventana1 = new home();
-      ventana1.setVisible(true);
-      this.setVisible(false);
-      
+        home ventana1 = new home();
+        ventana1.setVisible(true);
+        this.setVisible(false);
+
     }//GEN-LAST:event_btCancelarActionPerformed
 
     /**
@@ -852,7 +843,4 @@ public void actualizarCliente() {
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 
-    
-
-  
 }

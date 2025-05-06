@@ -14,8 +14,10 @@ import javax.swing.table.DefaultTableModel;
  * @author camper
  */
 public class Vehiculo extends javax.swing.JFrame {
+
     private VehiculoController vehiculoController;
     private String placaOriginal;
+
     /**
      * Creates new form Vehiculo
      */
@@ -25,8 +27,7 @@ public class Vehiculo extends javax.swing.JFrame {
         actualizarTabla();
     }
 
-    
-     private void registrarVehiculo() {
+    private void registrarVehiculo() {
         String placa = tbPlacaRegister.getText();
         String tipo = (String) cbTipoRegister.getSelectedItem();
         String modelo = tbModeloRegister.getText();
@@ -36,17 +37,18 @@ public class Vehiculo extends javax.swing.JFrame {
         // Llama al controlador para registrar el vehículo
         vehiculoController.guardarVehiculo(placa, tipo, modelo, marca, idCliente);
         JOptionPane.showMessageDialog(this, "Vehiculo registrado correctamente.");
-         actualizarTabla();
-         limpiarcampos();
-       
+        actualizarTabla();
+        limpiarcampos();
+
     }
-     
-    private void limpiarcampos(){
-    tbPlacaRegister.setText("");
-    tbModeloRegister.setText("");
-    tbMarcaRegister.setText("");
-    tbClienteRegister.setText("");
+
+    private void limpiarcampos() {
+        tbPlacaRegister.setText("");
+        tbModeloRegister.setText("");
+        tbMarcaRegister.setText("");
+        tbClienteRegister.setText("");
     }
+
     private void actualizarTabla() {
         try {
             // Llama al controlador para obtener todos los vehículos
@@ -61,8 +63,8 @@ public class Vehiculo extends javax.swing.JFrame {
         } catch (Exception e) {
             System.err.println("Error actualizando la tabla: " + e.getMessage());
         }
-    } 
-    
+    }
+
     private void buscarVehiculoPorPlaca() {
         String placa = tbBuscarPlaca.getText();
         com.mycompany.systemcarmotor.model.Vehiculo vehiculo = vehiculoController.obtenerVehiculoPorPlaca(placa);
@@ -71,42 +73,40 @@ public class Vehiculo extends javax.swing.JFrame {
             DefaultTableModel model = (DefaultTableModel) jTableBuscarPlaca.getModel();
             model.setRowCount(0); // Limpiar la tabla antes de agregar los nuevos datos
             model.addRow(new Object[]{vehiculo.getPlaca(), vehiculo.getTipo(), vehiculo.getModelo(), vehiculo.getMarca(), vehiculo.getId_cliente()});
-       
+
         }
     }
-    
+
     private void borrarVehiculo() {
         String placa = tbBorrarVehicle.getText();
         vehiculoController.eliminarVehiculo(placa);
         actualizarTabla(); // Actualiza la tabla después de la eliminación
-         JOptionPane.showMessageDialog(this, "Vehiculo eliminado.");
+        JOptionPane.showMessageDialog(this, "Vehiculo eliminado.");
     }
-    
+
     private void buscarYActualizarVehiculo() {
         String placa = buscarActualizar.getText();
-    com.mycompany.systemcarmotor.model.Vehiculo vehiculo = vehiculoController.obtenerVehiculoPorPlaca(placa);
-    if (vehiculo != null) {
-        DefaultTableModel model = (DefaultTableModel) jTableverActualizar.getModel();
-        model.setRowCount(0);
-        model.addRow(new Object[]{vehiculo.getPlaca(), vehiculo.getTipo(), vehiculo.getModelo(), vehiculo.getMarca(), vehiculo.getId_cliente()});
+        com.mycompany.systemcarmotor.model.Vehiculo vehiculo = vehiculoController.obtenerVehiculoPorPlaca(placa);
+        if (vehiculo != null) {
+            DefaultTableModel model = (DefaultTableModel) jTableverActualizar.getModel();
+            model.setRowCount(0);
+            model.addRow(new Object[]{vehiculo.getPlaca(), vehiculo.getTipo(), vehiculo.getModelo(), vehiculo.getMarca(), vehiculo.getId_cliente()});
 
-        // Cargar en campos de edición
-        tbPlacaRegister.setText(vehiculo.getPlaca());
-        cbTipoRegister.setSelectedItem(vehiculo.getTipo());
-        tbModeloRegister.setText(vehiculo.getModelo());
-        tbMarcaRegister.setText(vehiculo.getMarca());
-        tbClienteRegister.setText(String.valueOf(vehiculo.getId_cliente()));
+            // Cargar en campos de edición
+            tbPlacaRegister.setText(vehiculo.getPlaca());
+            cbTipoRegister.setSelectedItem(vehiculo.getTipo());
+            tbModeloRegister.setText(vehiculo.getModelo());
+            tbMarcaRegister.setText(vehiculo.getMarca());
+            tbClienteRegister.setText(String.valueOf(vehiculo.getId_cliente()));
 
-        // Guardar placa original
-        placaOriginal = vehiculo.getPlaca();
-    } else {
-        JOptionPane.showMessageDialog(this, "Vehículo no encontrado.");
-    }    
-   }
-    
-    
-      // Método para actualizar la tabla con los vehículos
-   
+            // Guardar placa original
+            placaOriginal = vehiculo.getPlaca();
+        } else {
+            JOptionPane.showMessageDialog(this, "Vehículo no encontrado.");
+        }
+    }
+
+    // Método para actualizar la tabla con los vehículos
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -518,20 +518,20 @@ public class Vehiculo extends javax.swing.JFrame {
     }//GEN-LAST:event_tbPlacaRegisterActionPerformed
 
     private void btRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRegistrarActionPerformed
-       registrarVehiculo();
+        registrarVehiculo();
     }//GEN-LAST:event_btRegistrarActionPerformed
 
     private void btnbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscarActionPerformed
-       
+
         buscarYActualizarVehiculo();
     }//GEN-LAST:event_btnbuscarActionPerformed
 
     private void btnBorrarVehicleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarVehicleActionPerformed
-      borrarVehiculo();
+        borrarVehiculo();
     }//GEN-LAST:event_btnBorrarVehicleActionPerformed
 
     private void btnBuscarPlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarPlacaActionPerformed
-       buscarVehiculoPorPlaca();
+        buscarVehiculoPorPlaca();
     }//GEN-LAST:event_btnBuscarPlacaActionPerformed
 
     private void buscarActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarActualizarActionPerformed
@@ -539,42 +539,42 @@ public class Vehiculo extends javax.swing.JFrame {
     }//GEN-LAST:event_buscarActualizarActionPerformed
 
     private void btGuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btGuardarCambiosActionPerformed
-     try {
-        String nuevaPlaca = tbPlacaRegister.getText().trim();
-        String tipo = (String) cbTipoRegister.getSelectedItem();
-        String modelo = tbModeloRegister.getText().trim();
-        String marca = tbMarcaRegister.getText().trim();
-        int idCliente = Integer.parseInt(tbClienteRegister.getText().trim());
+        try {
+            String nuevaPlaca = tbPlacaRegister.getText().trim();
+            String tipo = (String) cbTipoRegister.getSelectedItem();
+            String modelo = tbModeloRegister.getText().trim();
+            String marca = tbMarcaRegister.getText().trim();
+            int idCliente = Integer.parseInt(tbClienteRegister.getText().trim());
 
-        if (nuevaPlaca.isEmpty() || modelo.isEmpty() || marca.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Todos los campos deben estar llenos.");
-            return;
+            if (nuevaPlaca.isEmpty() || modelo.isEmpty() || marca.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Todos los campos deben estar llenos.");
+                return;
+            }
+
+            if (placaOriginal == null || placaOriginal.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Debe buscar un vehículo antes de actualizar.");
+                return;
+            }
+
+            vehiculoController.actualizarVehiculo(nuevaPlaca, tipo, modelo, marca, idCliente, placaOriginal);
+
+            JOptionPane.showMessageDialog(this, "Vehículo actualizado correctamente.");
+
+            limpiarcampos();
+            actualizarTabla();
+
+            placaOriginal = null; // Limpiar estado
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El ID del cliente debe ser un número válido.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al actualizar vehículo: " + e.getMessage());
         }
-
-        if (placaOriginal == null || placaOriginal.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe buscar un vehículo antes de actualizar.");
-            return;
-        }
-
-        vehiculoController.actualizarVehiculo(nuevaPlaca, tipo, modelo, marca, idCliente, placaOriginal);
-
-        JOptionPane.showMessageDialog(this, "Vehículo actualizado correctamente.");
-
-        limpiarcampos();
-        actualizarTabla();
-
-        placaOriginal = null; // Limpiar estado
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "El ID del cliente debe ser un número válido.");
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error al actualizar vehículo: " + e.getMessage());
-    }
     }//GEN-LAST:event_btGuardarCambiosActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         home ventana1 = new home();
-      ventana1.setVisible(true);
-      this.setVisible(false);
+        ventana1.setVisible(true);
+        this.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
