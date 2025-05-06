@@ -103,7 +103,7 @@ CREATE TABLE Tecnicos (
 
 -- Tabla: TipoMantenimiento
 CREATE TABLE TipoMantenimiento (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT ,
     tipo ENUM('Preventivo', 'Correctivo', 'Programado'),
     subTipo VARCHAR(50)
 );
@@ -240,6 +240,16 @@ INSERT INTO EstadoRepuesto (nombre) VALUES
 ('Disponible'),
 ('Reservado'),
 ('Fuera de servicio');
+
+
+-- insersiones estado servicio
+
+INSERT INTO EstadoServicio (nombre) VALUES
+('Pendiente'),
+('En proceso'),
+('Completado'),
+('Entregado');
+
 
 -- Índices para mejorar rendimiento
 CREATE INDEX idx_repuesto_estado ON Repuestos(id_estado);
