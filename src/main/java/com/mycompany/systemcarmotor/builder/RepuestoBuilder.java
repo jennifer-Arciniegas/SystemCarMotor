@@ -22,40 +22,49 @@ public class RepuestoBuilder {
     private int idEstado = 1; // Por defecto: "Disponible"
     private int idProveedor;
 
-    public void setNombre(String nombre) {
+    public RepuestoBuilder setNombre(String nombre) {
         this.nombre = nombre;
+        return this;
     }
 
-    public void setTipo(String tipo) {
+    public RepuestoBuilder setTipo(String tipo) {
         this.tipo = tipo;
+        return this;
     }
 
-    public void setMarca(String marca) {
+    public RepuestoBuilder setMarca(String marca) {
         this.marca = marca;
+        return this;
     }
 
-    public void setModelo(String modelo) {
+    public RepuestoBuilder setModelo(String modelo) {
         this.modelo = modelo;
+        return this;
     }
 
-    public void setCantidad(int cantidad) {
+    public RepuestoBuilder setCantidad(int cantidad) {
         this.cantidad = cantidad;
+        return this;
     }
 
-    public void setFechaIngreso(Date fechaIngreso) {
+    public RepuestoBuilder setFechaIngreso(Date fechaIngreso) {
         this.fechaIngreso = fechaIngreso;
+        return this;
     }
 
-    public void setVidaUtilEstimada(int vidaUtilEstimada) {
+    public RepuestoBuilder setVidaUtilEstimada(int vidaUtilEstimada) {
         this.vidaUtilEstimada = vidaUtilEstimada;
+        return this;
     }
 
-    public void setIdEstado(int idEstado) {
+    public RepuestoBuilder setIdEstado(int idEstado) {
         this.idEstado = idEstado;
+        return this;
     }
 
-    public void setIdProveedor(int idProveedor) {
+    public RepuestoBuilder setIdProveedor(int idProveedor) {
         this.idProveedor = idProveedor;
+        return this;
     }
     
     public Repuesto build(){

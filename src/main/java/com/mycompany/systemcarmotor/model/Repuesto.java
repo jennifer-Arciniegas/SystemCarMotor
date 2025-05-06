@@ -11,7 +11,7 @@ import java.util.Date;
  * @author camper
  */
 public class Repuesto {
-    private int id;
+
     private String nombre;
     private String tipo;
     private String marca;
@@ -34,13 +34,7 @@ public class Repuesto {
         this.idProveedor = idProveedor;
     }
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getNombre() {
         return nombre;
