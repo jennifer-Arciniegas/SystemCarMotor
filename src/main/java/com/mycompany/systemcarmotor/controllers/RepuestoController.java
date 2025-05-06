@@ -55,4 +55,9 @@ public class RepuestoController {
     public List<Repuesto> obtenerRepuestosPorEstado(String estado) throws SQLException {
         return repuestoService.obtenerPorEstado(estado);
     }
+    
+    public void actualizarEstadoRepuesto(int idRepuesto, int idEstado) throws SQLException {
+    repuestoService.actualizarEstado(idRepuesto, idEstado);
+}
+
 }

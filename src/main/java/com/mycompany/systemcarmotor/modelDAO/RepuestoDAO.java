@@ -119,6 +119,16 @@ public class RepuestoDAO {
     
     return lista;
 }
+    
+    public void actualizarEstadoRepuesto(int idRepuesto, int idEstado) throws SQLException {
+    String sql = "UPDATE Repuestos SET id_estado = ? WHERE id = ?";
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        pstmt.setInt(1, idEstado);
+        pstmt.setInt(2, idRepuesto);
+        pstmt.executeUpdate();
+    }
+}
 
 
 }

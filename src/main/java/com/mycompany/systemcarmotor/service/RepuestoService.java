@@ -26,4 +26,9 @@ public class RepuestoService {
     public List<Repuesto> obtenerPorEstado(String estado) throws SQLException {
         return RepuestoDAO.getInstance().obtenerPorEstado(estado);
     }
+    
+    public void actualizarEstado(int idRepuesto, int idEstado) throws SQLException {
+    RepuestoDAO.getInstance().actualizarEstadoRepuesto(idRepuesto, idEstado);
+}
+
 }
