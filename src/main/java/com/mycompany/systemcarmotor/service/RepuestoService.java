@@ -7,6 +7,7 @@ package com.mycompany.systemcarmotor.service;
 import com.mycompany.systemcarmotor.model.Repuesto;
 import com.mycompany.systemcarmotor.modelDAO.RepuestoDAO;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
@@ -16,6 +17,11 @@ public class RepuestoService {
       public void registrarRepuesto(Repuesto repuesto) throws SQLException {
         RepuestoDAO.getInstance().guardar(repuesto);
     }
+      
+     public List<Repuesto> obtenerTodosLosRepuestos() throws SQLException {
+        return RepuestoDAO.getInstance().obtenerTodos();
+    }
 }
+
 
 

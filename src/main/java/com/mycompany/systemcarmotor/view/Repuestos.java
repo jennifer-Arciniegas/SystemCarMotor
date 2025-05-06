@@ -5,14 +5,18 @@
 package com.mycompany.systemcarmotor.view;
 
 import com.mycompany.systemcarmotor.controllers.RepuestoController;
+import com.mycompany.systemcarmotor.model.Repuesto;
 import java.util.Date;
+import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author camper
  */
 public class Repuestos extends javax.swing.JFrame {
+    private RepuestoController repuestoController = new RepuestoController();
 
     /**
      * Creates new form Repuestos
@@ -29,6 +33,40 @@ public class Repuestos extends javax.swing.JFrame {
     txtIdProveedor.setText("");
     spinnerFechaIngreso.setValue(new Date());
 }
+    
+    
+    private void cargarTablaRepuestos() {
+    try {
+        // Obtiene la lista de repuestos desde el controlador
+     List<Repuesto> lista = repuestoController.obtenerTodosLosRepuestos();
+
+
+
+        // Modelo de la tabla
+        DefaultTableModel modelo = (DefaultTableModel) jTableVerTodos.getModel();
+        modelo.setRowCount(0); // Limpia la tabla
+
+        // Agrega cada repuesto a la tabla
+        for (Repuesto r : lista) {
+            modelo.addRow(new Object[]{
+                r.getId(),
+                r.getNombre(),
+                r.getTipo(),
+                r.getMarca(),
+                r.getModelo(),
+                r.getCantidad(),
+                r.getFechaIngreso(),
+                r.getVidaUtilEstimada(),
+                r.getEstado(),      // <- aquí se muestra el nombre del estado
+                r.getProveedor()    // <- aquí se muestra el nombre del proveedor
+            });
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al cargar repuestos: " + e.getMessage());
+    }
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -61,8 +99,11 @@ public class Repuestos extends javax.swing.JFrame {
         btRegistrarRepuestos = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        jTableVerTodos = new javax.swing.JTable();
+        btnVerTodosRepuestos = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -184,7 +225,7 @@ public class Repuestos extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Registrar", jPanel1);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTableVerTodos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null, null},
@@ -203,9 +244,20 @@ public class Repuestos extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTableVerTodos);
 
-        jButton1.setText("Ver");
+        btnVerTodosRepuestos.setText("Ver");
+        btnVerTodosRepuestos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerTodosRepuestosActionPerformed(evt);
+            }
+        });
+
+        jLabel11.setText("Filtros:");
+
+        jLabel12.setText("Estado:");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Disponible", "Reservado", "Fuera de servicio" }));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -215,7 +267,13 @@ public class Repuestos extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addComponent(jButton1))
+                        .addComponent(btnVerTodosRepuestos)
+                        .addGap(134, 134, 134)
+                        .addComponent(jLabel11)
+                        .addGap(29, 29, 29)
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 802, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -225,7 +283,11 @@ public class Repuestos extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnVerTodosRepuestos)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel12)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -293,6 +355,10 @@ public class Repuestos extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_btRegistrarRepuestosActionPerformed
 
+    private void btnVerTodosRepuestosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerTodosRepuestosActionPerformed
+       cargarTablaRepuestos();
+    }//GEN-LAST:event_btnVerTodosRepuestosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -330,10 +396,13 @@ public class Repuestos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btRegistrarRepuestos;
+    private javax.swing.JButton btnVerTodosRepuestos;
     private javax.swing.JComboBox<String> cbTipo;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -346,7 +415,7 @@ public class Repuestos extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTableVerTodos;
     private javax.swing.JSpinner spinnerFechaIngreso;
     private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtIdProveedor;

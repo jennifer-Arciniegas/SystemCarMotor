@@ -84,5 +84,41 @@ public class RepuestoDAO {
 
     return lista;
 }
+    
+    public List<Repuesto> obtenerPorEstado(String nombreEstado) throws SQLException {
+    List<Repuesto> lista = new ArrayList<>();
+    
+    String sql = "SELECT r.id, r.nombre, r.tipo, r.marca, r.modelo, r.cantidad, " +
+                 "r.fecha_ingreso, r.vida_util_estimada, e.nombre AS estado, p.nombre AS proveedor " +
+                 "FROM Repuestos r " +
+                 "JOIN EstadoRepuesto e ON r.id_estado = e.id " +
+                 "JOIN Proveedores p ON r.id_proveedor = p.id " +
+                 "WHERE e.nombre = ?";
+
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        stmt.setString(1, nombreEstado);
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            Repuesto repuesto = new Repuesto();
+            repuesto.setId(rs.getInt("id"));
+            repuesto.setNombre(rs.getString("nombre"));
+            repuesto.setTipo(rs.getString("tipo"));
+            repuesto.setMarca(rs.getString("marca"));
+            repuesto.setModelo(rs.getString("modelo"));
+            repuesto.setCantidad(rs.getInt("cantidad"));
+            repuesto.setFechaIngreso(rs.getDate("fecha_ingreso"));
+            repuesto.setVidaUtilEstimada(rs.getInt("vida_util_estimada"));
+            repuesto.setEstado(rs.getString("estado"));
+            repuesto.setProveedor(rs.getString("proveedor"));
+            lista.add(repuesto);
+        }
+    }
+    
+    return lista;
+}
+
 
 }

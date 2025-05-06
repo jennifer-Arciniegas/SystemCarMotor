@@ -9,6 +9,7 @@ import com.mycompany.systemcarmotor.model.Repuesto;
 import com.mycompany.systemcarmotor.service.RepuestoService;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -16,6 +17,8 @@ import java.util.Date;
  */
 public class RepuestoController {
     private RepuestoService repuestoService;
+    private RepuestoController repuestoController = new RepuestoController();
+
 
     public RepuestoController() {
         this.repuestoService = new RepuestoService();
@@ -38,5 +41,15 @@ public class RepuestoController {
                 .build();
 
         repuestoService.registrarRepuesto(repuesto);
+    }
+    
+    
+    public List<Repuesto> obtenerTodosLosRepuestos() {
+        try { 
+            return repuestoService.obtenerTodosLosRepuestos();
+        } catch (SQLException e) { 
+            System.err.println("Error al obtener repuestos: " + e.getMessage());
+            return null;
+        }
     }
 }
