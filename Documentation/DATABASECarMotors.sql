@@ -49,17 +49,7 @@ CREATE TABLE Repuestos (
     FOREIGN KEY (id_proveedor) REFERENCES Proveedores(id)
 );
 
--- Tabla para Lotes (Trazabilidad)
-CREATE TABLE Lotes (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    id_repuesto INT,
-    id_proveedor INT,
-    fecha_ingreso DATE NOT NULL,
-    fecha_caducidad DATE,
-    cantidad INT NOT NULL,
-    FOREIGN KEY (id_repuesto) REFERENCES Repuestos(id),
-    FOREIGN KEY (id_proveedor) REFERENCES Proveedores(id)
-);
+
 
 -- Tabla para Clientes
 CREATE TABLE Clientes (
@@ -103,7 +93,7 @@ CREATE TABLE Tecnicos (
 
 -- Tabla: TipoMantenimiento
 CREATE TABLE TipoMantenimiento (
-    id INT PRIMARY KEY AUTO_INCREMENT ,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     tipo ENUM('Preventivo', 'Correctivo', 'Programado'),
     subTipo VARCHAR(50)
 );
@@ -163,11 +153,10 @@ CREATE TABLE Uso_Repuestos (
     id INT PRIMARY KEY AUTO_INCREMENT,
     id_servicio INT,
     id_repuesto INT,
-    id_lote INT,
     cantidad_usada INT NOT NULL,
     FOREIGN KEY (id_servicio) REFERENCES Servicios(id) ON DELETE CASCADE,
-    FOREIGN KEY (id_repuesto) REFERENCES Repuestos(id),
-    FOREIGN KEY (id_lote) REFERENCES Lotes(id)
+    FOREIGN KEY (id_repuesto) REFERENCES Repuestos(id)
+   
 );
 
 -- Tabla para Descuentos (Fidelización)
@@ -249,6 +238,19 @@ INSERT INTO EstadoServicio (nombre) VALUES
 ('En proceso'),
 ('Completado'),
 ('Entregado');
+
+
+
+-- insertar info del taller 
+INSERT INTO TallerInformacion (nombre_taller, razon_social, nit, direccion, telefono)
+VALUES (
+    'CarMotors',
+    'CarMotors Taller Integral S.A.S',
+    '901245678-1',
+    'Carrera 45 #18-22, San fransisco',
+    '3174567890'
+);
+
 
 
 -- Índices para mejorar rendimiento
