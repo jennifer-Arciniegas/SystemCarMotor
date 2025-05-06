@@ -176,6 +176,7 @@ private void eliminarRepuestoPorId() {
         jLabel17 = new javax.swing.JLabel();
         BtnDeleteRepuesto = new javax.swing.JButton();
         txtIdDeleteRepuesto = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -447,6 +448,13 @@ private void eliminarRepuestoPorId() {
             }
         });
 
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -454,6 +462,7 @@ private void eliminarRepuestoPorId() {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel17)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -473,7 +482,9 @@ private void eliminarRepuestoPorId() {
                     .addComponent(jLabel17)
                     .addComponent(BtnDeleteRepuesto)
                     .addComponent(txtIdDeleteRepuesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(144, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(17, 17, 17))
         );
 
         jTabbedPane1.addTab("Eliminar", jPanel4);
@@ -557,6 +568,12 @@ private void eliminarRepuestoPorId() {
       
     }//GEN-LAST:event_txtIdDeleteRepuestoActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       home ventana1 = new home();
+        ventana1.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -599,6 +616,7 @@ private void eliminarRepuestoPorId() {
     private javax.swing.JButton btnVerTodosRepuestos;
     private javax.swing.JComboBox<String> cbTipo;
     private javax.swing.JComboBox<String> comboEstadoNuevo;
+    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
