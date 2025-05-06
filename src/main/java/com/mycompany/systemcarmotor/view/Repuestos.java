@@ -65,6 +65,35 @@ public class Repuestos extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al cargar repuestos: " + e.getMessage());
         }
     }
+    
+    
+    
+    private void cargarTablaRepuestosPorEstado(String estado) {
+    try {
+        List<Repuesto> lista = repuestoController.obtenerRepuestosPorEstado(estado);
+        DefaultTableModel modelo = (DefaultTableModel) jTableVerTodos.getModel();
+        modelo.setRowCount(0);
+
+        for (Repuesto r : lista) {
+            modelo.addRow(new Object[]{
+                r.getId(),
+                r.getNombre(),
+                r.getTipo(),
+                r.getMarca(),
+                r.getModelo(),
+                r.getCantidad(),
+                r.getFechaIngreso(),
+                r.getVidaUtilEstimada(),
+                r.getEstado(),
+                r.getProveedor()
+            });
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al filtrar repuestos: " + e.getMessage());
+    }
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -102,6 +131,7 @@ public class Repuestos extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
+        verFiltrado = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -257,6 +287,13 @@ public class Repuestos extends javax.swing.JFrame {
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Disponible", "Reservado", "Fuera de servicio" }));
 
+        verFiltrado.setText("ver");
+        verFiltrado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verFiltradoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -271,7 +308,9 @@ public class Repuestos extends javax.swing.JFrame {
                         .addGap(29, 29, 29)
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(verFiltrado))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 802, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -285,7 +324,8 @@ public class Repuestos extends javax.swing.JFrame {
                     .addComponent(btnVerTodosRepuestos)
                     .addComponent(jLabel11)
                     .addComponent(jLabel12)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(verFiltrado))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -356,6 +396,11 @@ public class Repuestos extends javax.swing.JFrame {
         cargarTablaRepuestos();
     }//GEN-LAST:event_btnVerTodosRepuestosActionPerformed
 
+    private void verFiltradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verFiltradoActionPerformed
+         String estadoSeleccionado = jComboBox1.getSelectedItem().toString();
+         cargarTablaRepuestosPorEstado(estadoSeleccionado);
+    }//GEN-LAST:event_verFiltradoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -420,5 +465,6 @@ public class Repuestos extends javax.swing.JFrame {
     private javax.swing.JTextField txtModelo;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtVidaUtil;
+    private javax.swing.JButton verFiltrado;
     // End of variables declaration//GEN-END:variables
 }

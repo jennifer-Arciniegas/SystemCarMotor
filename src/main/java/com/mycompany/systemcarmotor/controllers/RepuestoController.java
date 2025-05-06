@@ -16,16 +16,16 @@ import java.util.List;
  * @author camper
  */
 public class RepuestoController {
+
     private RepuestoService repuestoService;
     private RepuestoController repuestoController;
-
 
     public RepuestoController() {
         this.repuestoService = new RepuestoService();
     }
 
     public void registrarRepuesto(String nombre, String tipo, String marca, String modelo,
-                                  int cantidad, Date fechaIngreso, int vidaUtil, int idProveedor) throws SQLException {
+            int cantidad, Date fechaIngreso, int vidaUtil, int idProveedor) throws SQLException {
 
         // El estado por defecto es 1 (Disponible)
         Repuesto repuesto = new RepuestoBuilder()
@@ -42,14 +42,17 @@ public class RepuestoController {
 
         repuestoService.registrarRepuesto(repuesto);
     }
-    
-    
+
     public List<Repuesto> obtenerTodosLosRepuestos() {
-        try { 
+        try {
             return repuestoService.obtenerTodosLosRepuestos();
-        } catch (SQLException e) { 
+        } catch (SQLException e) {
             System.err.println("Error al obtener repuestos: " + e.getMessage());
             return null;
         }
+    }
+
+    public List<Repuesto> obtenerRepuestosPorEstado(String estado) throws SQLException {
+        return repuestoService.obtenerPorEstado(estado);
     }
 }

@@ -14,14 +14,16 @@ import java.util.List;
  * @author camper
  */
 public class RepuestoService {
-      public void registrarRepuesto(Repuesto repuesto) throws SQLException {
+
+    public void registrarRepuesto(Repuesto repuesto) throws SQLException {
         RepuestoDAO.getInstance().guardar(repuesto);
     }
-      
-     public List<Repuesto> obtenerTodosLosRepuestos() throws SQLException {
+
+    public List<Repuesto> obtenerTodosLosRepuestos() throws SQLException {
         return RepuestoDAO.getInstance().obtenerTodos();
     }
+
+    public List<Repuesto> obtenerPorEstado(String estado) throws SQLException {
+        return RepuestoDAO.getInstance().obtenerPorEstado(estado);
+    }
 }
-
-
-
