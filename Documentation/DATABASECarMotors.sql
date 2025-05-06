@@ -235,6 +235,12 @@ CREATE TABLE Inspecciones_Tecnicas (
     FOREIGN KEY (id_vehiculo) REFERENCES Vehiculos(id) ON DELETE CASCADE
 );
 
+-- inserciones de estado repuestos 
+INSERT INTO EstadoRepuesto (nombre) VALUES 
+('Disponible'),
+('Reservado'),
+('Fuera de servicio');
+
 -- Índices para mejorar rendimiento
 CREATE INDEX idx_repuesto_estado ON Repuestos(id_estado);
 CREATE INDEX idx_servicio_estado ON Servicios(id_estado);
