@@ -116,6 +116,17 @@ private void actualizarEstadoRepuesto() {
     }
 }
 
+private void eliminarRepuestoPorId() {
+    try {
+        int id = Integer.parseInt(txtIdDeleteRepuesto.getText().trim());
+        repuestoController.eliminarRepuesto(id);
+        JOptionPane.showMessageDialog(this, "Repuesto eliminado correctamente.");
+        cargarTablaRepuestos(); // Refrescar tabla si deseas
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al eliminar repuesto: " + e.getMessage());
+    }
+}
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -160,6 +171,11 @@ private void actualizarEstadoRepuesto() {
         comboEstadoNuevo = new javax.swing.JComboBox<>();
         jLabel15 = new javax.swing.JLabel();
         btnCambiarEstado = new javax.swing.JButton();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        BtnDeleteRepuesto = new javax.swing.JButton();
+        txtIdDeleteRepuesto = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -414,6 +430,54 @@ private void actualizarEstadoRepuesto() {
 
         jTabbedPane1.addTab("Actualizar", jPanel3);
 
+        jLabel16.setText("Eliminar repuesto.");
+
+        jLabel17.setText("ID:");
+
+        BtnDeleteRepuesto.setText("Eliminar");
+        BtnDeleteRepuesto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnDeleteRepuestoActionPerformed(evt);
+            }
+        });
+
+        txtIdDeleteRepuesto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIdDeleteRepuestoActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel17)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtIdDeleteRepuesto, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(BtnDeleteRepuesto))
+                    .addComponent(jLabel16))
+                .addContainerGap(592, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel16)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel17)
+                    .addComponent(BtnDeleteRepuesto)
+                    .addComponent(txtIdDeleteRepuesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(144, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Eliminar", jPanel4);
+
         jLabel1.setText("Repuestos");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -485,6 +549,14 @@ private void actualizarEstadoRepuesto() {
         actualizarEstadoRepuesto();
     }//GEN-LAST:event_btnCambiarEstadoActionPerformed
 
+    private void BtnDeleteRepuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDeleteRepuestoActionPerformed
+        eliminarRepuestoPorId();
+    }//GEN-LAST:event_BtnDeleteRepuestoActionPerformed
+
+    private void txtIdDeleteRepuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdDeleteRepuestoActionPerformed
+      
+    }//GEN-LAST:event_txtIdDeleteRepuestoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -521,6 +593,7 @@ private void actualizarEstadoRepuesto() {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnDeleteRepuesto;
     private javax.swing.JButton btRegistrarRepuestos;
     private javax.swing.JButton btnCambiarEstado;
     private javax.swing.JButton btnVerTodosRepuestos;
@@ -534,6 +607,8 @@ private void actualizarEstadoRepuesto() {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -545,12 +620,14 @@ private void actualizarEstadoRepuesto() {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTableVerTodos;
     private javax.swing.JSpinner spinnerFechaIngreso;
     private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtIdActualizarEstado;
+    private javax.swing.JTextField txtIdDeleteRepuesto;
     private javax.swing.JTextField txtIdProveedor;
     private javax.swing.JTextField txtMarca;
     private javax.swing.JTextField txtModelo;

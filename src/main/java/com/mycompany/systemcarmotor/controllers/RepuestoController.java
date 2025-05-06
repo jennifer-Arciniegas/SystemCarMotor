@@ -55,9 +55,13 @@ public class RepuestoController {
     public List<Repuesto> obtenerRepuestosPorEstado(String estado) throws SQLException {
         return repuestoService.obtenerPorEstado(estado);
     }
-    
+
     public void actualizarEstadoRepuesto(int idRepuesto, int idEstado) throws SQLException {
-    repuestoService.actualizarEstado(idRepuesto, idEstado);
-}
+        repuestoService.actualizarEstado(idRepuesto, idEstado);
+    }
+
+    public void eliminarRepuesto(int id) throws SQLException {
+        repuestoService.eliminarRepuesto(id);
+    }
 
 }

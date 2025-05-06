@@ -18,8 +18,9 @@ import java.util.List;
  * @author camper
  */
 public class RepuestoDAO {
+
     private static RepuestoDAO instance;
-    
+
     private RepuestoDAO() {
         // Constructor privado para Singleton
     }
@@ -32,11 +33,10 @@ public class RepuestoDAO {
     }
 
     public void guardar(Repuesto repuesto) throws SQLException {
-        String sql = "INSERT INTO Repuestos (nombre, tipo, marca, modelo, cantidad, fecha_ingreso, vida_util_estimada, id_estado, id_proveedor) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Repuestos (nombre, tipo, marca, modelo, cantidad, fecha_ingreso, vida_util_estimada, id_estado, id_proveedor) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, repuesto.getNombre());
             pstmt.setString(2, repuesto.getTipo());
@@ -51,84 +51,86 @@ public class RepuestoDAO {
             pstmt.executeUpdate();
         }
     }
-    
+
     public List<Repuesto> obtenerTodos() throws SQLException {
-    List<Repuesto> lista = new ArrayList<>();
+        List<Repuesto> lista = new ArrayList<>();
 
-    String sql = "SELECT r.id, r.nombre, r.tipo, r.marca, r.modelo, r.cantidad, r.fecha_ingreso, r.vida_util_estimada, " +
-                 "e.nombre AS estado, p.nombre AS proveedor " +
-                 "FROM Repuestos r " +
-                 "JOIN EstadoRepuesto e ON r.id_estado = e.id " +
-                 "JOIN Proveedores p ON r.id_proveedor = p.id";
+        String sql = "SELECT r.id, r.nombre, r.tipo, r.marca, r.modelo, r.cantidad, r.fecha_ingreso, r.vida_util_estimada, "
+                + "e.nombre AS estado, p.nombre AS proveedor "
+                + "FROM Repuestos r "
+                + "JOIN EstadoRepuesto e ON r.id_estado = e.id "
+                + "JOIN Proveedores p ON r.id_proveedor = p.id";
 
-    try (Connection conn = DatabaseConnection.getConnection();
-         PreparedStatement stmt = conn.prepareStatement(sql);
-         ResultSet rs = stmt.executeQuery()) {
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
 
-        while (rs.next()) {
-            Repuesto r = new Repuesto();
-            r.setId(rs.getInt("id"));
-            r.setNombre(rs.getString("nombre"));
-            r.setTipo(rs.getString("tipo"));
-            r.setMarca(rs.getString("marca"));
-            r.setModelo(rs.getString("modelo"));
-            r.setCantidad(rs.getInt("cantidad"));
-            r.setFechaIngreso(rs.getDate("fecha_ingreso"));
-            r.setVidaUtilEstimada(rs.getInt("vida_util_estimada"));
-            r.setEstado(rs.getString("estado")); // Nuevo campo
-            r.setProveedor(rs.getString("proveedor")); // Nuevo campo
+            while (rs.next()) {
+                Repuesto r = new Repuesto();
+                r.setId(rs.getInt("id"));
+                r.setNombre(rs.getString("nombre"));
+                r.setTipo(rs.getString("tipo"));
+                r.setMarca(rs.getString("marca"));
+                r.setModelo(rs.getString("modelo"));
+                r.setCantidad(rs.getInt("cantidad"));
+                r.setFechaIngreso(rs.getDate("fecha_ingreso"));
+                r.setVidaUtilEstimada(rs.getInt("vida_util_estimada"));
+                r.setEstado(rs.getString("estado")); // Nuevo campo
+                r.setProveedor(rs.getString("proveedor")); // Nuevo campo
 
-            lista.add(r);
+                lista.add(r);
+            }
         }
+
+        return lista;
     }
 
-    return lista;
-}
-    
     public List<Repuesto> obtenerPorEstado(String nombreEstado) throws SQLException {
-    List<Repuesto> lista = new ArrayList<>();
-    
-    String sql = "SELECT r.id, r.nombre, r.tipo, r.marca, r.modelo, r.cantidad, " +
-                 "r.fecha_ingreso, r.vida_util_estimada, e.nombre AS estado, p.nombre AS proveedor " +
-                 "FROM Repuestos r " +
-                 "JOIN EstadoRepuesto e ON r.id_estado = e.id " +
-                 "JOIN Proveedores p ON r.id_proveedor = p.id " +
-                 "WHERE e.nombre = ?";
+        List<Repuesto> lista = new ArrayList<>();
 
-    try (Connection conn = DatabaseConnection.getConnection();
-         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        String sql = "SELECT r.id, r.nombre, r.tipo, r.marca, r.modelo, r.cantidad, "
+                + "r.fecha_ingreso, r.vida_util_estimada, e.nombre AS estado, p.nombre AS proveedor "
+                + "FROM Repuestos r "
+                + "JOIN EstadoRepuesto e ON r.id_estado = e.id "
+                + "JOIN Proveedores p ON r.id_proveedor = p.id "
+                + "WHERE e.nombre = ?";
 
-        stmt.setString(1, nombreEstado);
-        ResultSet rs = stmt.executeQuery();
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-        while (rs.next()) {
-            Repuesto repuesto = new Repuesto();
-            repuesto.setId(rs.getInt("id"));
-            repuesto.setNombre(rs.getString("nombre"));
-            repuesto.setTipo(rs.getString("tipo"));
-            repuesto.setMarca(rs.getString("marca"));
-            repuesto.setModelo(rs.getString("modelo"));
-            repuesto.setCantidad(rs.getInt("cantidad"));
-            repuesto.setFechaIngreso(rs.getDate("fecha_ingreso"));
-            repuesto.setVidaUtilEstimada(rs.getInt("vida_util_estimada"));
-            repuesto.setEstado(rs.getString("estado"));
-            repuesto.setProveedor(rs.getString("proveedor"));
-            lista.add(repuesto);
+            stmt.setString(1, nombreEstado);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Repuesto repuesto = new Repuesto();
+                repuesto.setId(rs.getInt("id"));
+                repuesto.setNombre(rs.getString("nombre"));
+                repuesto.setTipo(rs.getString("tipo"));
+                repuesto.setMarca(rs.getString("marca"));
+                repuesto.setModelo(rs.getString("modelo"));
+                repuesto.setCantidad(rs.getInt("cantidad"));
+                repuesto.setFechaIngreso(rs.getDate("fecha_ingreso"));
+                repuesto.setVidaUtilEstimada(rs.getInt("vida_util_estimada"));
+                repuesto.setEstado(rs.getString("estado"));
+                repuesto.setProveedor(rs.getString("proveedor"));
+                lista.add(repuesto);
+            }
+        }
+
+        return lista;
+    }
+
+    public void actualizarEstadoRepuesto(int idRepuesto, int idEstado) throws SQLException {
+        String sql = "UPDATE Repuestos SET id_estado = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, idEstado);
+            pstmt.setInt(2, idRepuesto);
+            pstmt.executeUpdate();
         }
     }
-    
-    return lista;
-}
-    
-    public void actualizarEstadoRepuesto(int idRepuesto, int idEstado) throws SQLException {
-    String sql = "UPDATE Repuestos SET id_estado = ? WHERE id = ?";
-    try (Connection conn = DatabaseConnection.getConnection();
-         PreparedStatement pstmt = conn.prepareStatement(sql)) {
-        pstmt.setInt(1, idEstado);
-        pstmt.setInt(2, idRepuesto);
-        pstmt.executeUpdate();
+
+    public void eliminarRepuesto(int id) throws SQLException {
+        String sql = "DELETE FROM Repuestos WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+        }
     }
-}
-
-
 }
